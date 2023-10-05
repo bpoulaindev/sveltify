@@ -16,7 +16,6 @@ export const POST: RequestHandler = async ({ url, request }) => {
 		client_id: clientId,
 		code_verifier: bodyParams.codeVerifier
 	});
-	console.log('lesgo', { body }, bodyParams);
 	const { data, error } = await fetch('https://accounts.spotify.com/api/token', {
 		method: 'POST',
 		headers: {
@@ -31,8 +30,6 @@ export const POST: RequestHandler = async ({ url, request }) => {
 			return response.json();
 		})
 		.then((data) => {
-			console.log('is it working ?', data);
-			// localStorage.setItem('access_token', data?.access_token);
 			return {
 				data: data?.access_token,
 				error: null

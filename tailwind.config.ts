@@ -15,6 +15,11 @@ export default {
 			screens: {
 				xs: '400px',
 				over500: '500px'
+			},
+			animation: {
+				'spin-1': 'spin 1s linear infinite',
+				'spin-2': 'spin 1.5s linear infinite',
+				'spin-3': 'spin 2s linear infinite'
 			}
 		},
 		spacing: {
@@ -41,6 +46,9 @@ export default {
 			16: '128px',
 			18: '144px',
 			20: '160px',
+			22: '176px',
+			24: '192px',
+			28: '224px',
 			40: '240px'
 		},
 		typography: (theme: any) => ({

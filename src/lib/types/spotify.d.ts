@@ -1,4 +1,4 @@
-interface UserProfile {
+export type UserProfile = {
 	country: string;
 	display_name: string;
 	email: string;
@@ -11,13 +11,13 @@ interface UserProfile {
 	href: string;
 	id: string;
 	images: Image[];
-	product: string;
+	product: 'premium' | 'free' | 'open';
 	type: string;
 	uri: string;
-}
+};
 
-interface Image {
+export type Image = {
 	url: string;
 	height: number;
 	width: number;
-}
+};

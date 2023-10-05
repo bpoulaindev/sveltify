@@ -5,7 +5,7 @@
 </script>
 <button
         type="button"
-        class={`${$darkMode ? 'bg-gray-700 ring-gray-500' : 'bg-gray-200 ring-gray-300'} relative inline-flex max-h-3.5 h-3.5 w-6.5 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ring-1 focus:ring-2 focus:ring-amber-600 focus:ring-offset-0`}
+        class={`${$darkMode ? 'bg-gray-700 ring-gray-500' : 'bg-gray-200 ring-gray-300'} relative inline-flex max-h-3.5 h-3.5 w-6.5 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ring-1 focus:ring-2 focus:ring-indigo-300 focus:ring-offset-0`}
         role="switch"
         aria-checked="false"
         on:click={toggleDarkMode}
@@ -15,8 +15,8 @@
     <span class={`${$darkMode ? 'translate-x-3' : 'translate-x-0'} pointer-events-none relative inline-block h-3 w-3 transform rounded-full ring-0 transition duration-200 ease-in-out`}>
     <!-- Enabled: "opacity-0 duration-100 ease-out", Not Enabled: "opacity-100 duration-200 ease-in" -->
 
-        <Moon class={`${$darkMode ? 'opacity-100 duration-200 ease-in' : 'opacity-0 duration-100 ease-out'} absolute inset-0 flex h-full w-full items-center justify-center transition-opacity text-amber-600 rounded-full p-0.25 bg-gray-900`} />
-        <SunDim class={`${$darkMode ? 'opacity-0 duration-100 ease-out' : 'opacity-100 duration-200 ease-in'} absolute inset-0 flex h-full w-full items-center justify-center transition-opacity text-amber-600 rounded-full p-0.25 bg-white`} />
+        <Moon class={`${$darkMode ? 'opacity-100 duration-200 ease-in' : 'opacity-0 duration-100 ease-out'} absolute inset-0 flex h-full w-full items-center justify-center transition-opacity text-indigo-300 rounded-full p-0.25 bg-gray-900`} />
+        <SunDim class={`${$darkMode ? 'opacity-0 duration-100 ease-out' : 'opacity-100 duration-200 ease-in'} absolute inset-0 flex h-full w-full items-center justify-center transition-opacity text-gray-600 rounded-full p-0.25 bg-white`} />
         <!-- Enabled: "opacity-100 duration-200 ease-in", Not Enabled: "opacity-0 duration-100 ease-out" -->
 
   </span>

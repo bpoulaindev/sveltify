@@ -2,7 +2,6 @@
     import {onMount} from "svelte";
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
-    export let authorization: boolean | null = null
     onMount(async () => {
         const code = $page.url.searchParams.get('code');
         const codeVerifier = localStorage.getItem('code_verifier') ?? '';
@@ -15,18 +14,14 @@
                 code,
                 codeVerifier
             })
-        }).then(res => res.json()).then((data) => {
+        }).then(res => res.json()).then((data: {data: string, error: string}) => {
             if (data?.error) {
-                console.log('error', data?.error)
                 goto('/login/error')
-                return
+                return;
             }
-            localStorage.setItem('access_token', data?.access_token)
+            localStorage.setItem('access_token', data.data)
             goto('/home')
+            return;
         })
-        // console.log('i wanna cry', test)
-        // const { data, error } = await useAccessToken(codeVerifier, code)
-            // localStorage.setItem('access_token', data?.access_token)
     })
-
 </script>

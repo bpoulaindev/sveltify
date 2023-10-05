@@ -12,18 +12,19 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "NodeNext",
+		"importsNotUsedAsValues": "error",
 		"paths": {
 			"$lib": [
-				"src/lib"
+				"./src/lib"
 			],
 			"$lib/*": [
-				"src/lib/*"
+				"./src/lib/*"
 			],
 			"$components/*": [
-				"src/lib/components/*"
+				"./src/lib/components/*"
 			],
 			"$assets/*": [
-				"src/assets/*"
+				"./src/assets/*"
 			],
 		}
 	}

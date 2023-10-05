@@ -79,8 +79,8 @@ export const initializeDarkMode = () => {
 		darkMode.set(false);
 	}
 	// Listen for changes to the dark mode state and update localStorage accordingly
-	darkMode.subscribe(($darkMode) => {
+	/* darkMode.subscribe(($darkMode) => {
 		// toggleHtml();
 		// localStorage.setItem('darkMode', $darkMode.toString());
-	});
+	}); */
 };
