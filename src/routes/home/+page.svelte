@@ -1,0 +1,1 @@
+<h1 class="dark:text-white text-dark-500 w-full text-end">COUCOU VOUS ETES CONNECTE</h1>

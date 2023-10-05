@@ -1,3 +1,14 @@
-<h1 class="text-red-500">Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import { UserCircle2 } from 'lucide-svelte';
+    const handleLogin = () => {
+        localStorage.getItem('access_token');
+        if (localStorage.getItem('access_token') === null) {
+            window.location.href = '/login';
+        } else {
+            window.location.href = '/home';
+        }
+    }
+</script>
+<h1 class="dark:text-white text-gray-800">
+    this is the homepage
+</h1>

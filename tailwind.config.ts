@@ -1,9 +1,75 @@
 import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
+import plugin from 'tailwindcss/plugin';
 
+// @ts-ignore
 export default {
+	darkMode: 'class',
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {}
+		extend: {
+			colors: {
+				cream: '#FFFAF5',
+				mint: '#68969C'
+			},
+			screens: {
+				xs: '400px',
+				over500: '500px'
+			}
+		},
+		spacing: {
+			0: '0px',
+			0.25: '2px',
+			'1/2': '4px',
+			0.5: '4px',
+			1: '8px',
+			1.5: '12px',
+			2: '16px',
+			2.5: '20px',
+			3: '24px',
+			3.5: '28px',
+			4: '32px',
+			5: '40px',
+			6: '48px',
+			'6.5': '52px',
+			7: '56px',
+			8: '64px',
+			9: '72px',
+			10: '80px',
+			12: '96px',
+			14: '112px',
+			16: '128px',
+			18: '144px',
+			20: '160px',
+			40: '240px'
+		},
+		typography: (theme: any) => ({
+			DEFAULT: {
+				css: {
+					code: {
+						position: 'relative',
+						borderRadius: theme('borderRadius.md')
+					}
+				}
+			}
+		})
 	},
-	plugins: []
+	plugins: [
+		require('@tailwindcss/forms'),
+		typography,
+		// @ts-ignore
+		plugin(function ({ addVariant, matchUtilities, theme }) {
+			addVariant('hocus', ['&:hover', '&:focus']);
+			// Square utility
+			matchUtilities(
+				{
+					square: (value: never) => ({
+						width: value,
+						height: value
+					})
+				},
+				{ values: theme('spacing') }
+			);
+		})
+	]
 } satisfies Config;
