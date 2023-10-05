@@ -1,3 +1,5 @@
+import { dev } from '$app/environment';
+
 const generateRandomString = (length: number) => {
 	let text = '';
 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -25,7 +27,9 @@ const generateCodeChallenge = async (codeVerifier: string) => {
 };
 export const useSpotifyLogin = () => {
 	const clientId = '3d769c375f754b6c9ba2c74606b34397';
-	const redirectUri = 'https://localhost:5173/login/callback';
+	const redirectUri = dev
+		? 'https://localhost:5173/login/callback'
+		: 'https://sveltify-dev.vercel.app/login/callback';
 
 	const codeVerifier = generateRandomString(128);
 	generateCodeChallenge(codeVerifier).then((codeChallenge) => {

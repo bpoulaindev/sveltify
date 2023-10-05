@@ -9,6 +9,6 @@
         }
     }
 </script>
-<h1 class="dark:text-white text-gray-800">
+<h1 class="dark:text-gray-200 text-gray-800">
     this is the homepage
 </h1>
