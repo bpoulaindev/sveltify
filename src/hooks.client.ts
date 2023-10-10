@@ -1,5 +1,8 @@
 import { dev } from '$app/environment';
-import type { Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
+import type { Token, Tokens, UserProfile } from '$lib/types/spotify.d.ts';
+import { tokenStore, userProfileStore } from '$lib/stores.ts';
+import dayjs from 'dayjs';
 
 const generateRandomString = (length: number) => {
 	let text = '';
@@ -35,7 +38,6 @@ export const useSpotifyLogin = () => {
 	const codeVerifier = generateRandomString(128);
 	generateCodeChallenge(codeVerifier).then((codeChallenge) => {
 		const state = generateRandomString(16);
-		const scope = 'user-read-private user-read-email';
 		localStorage.setItem('code_verifier', codeVerifier);
 		const args = new URLSearchParams({
 			response_type: 'code',
@@ -49,11 +51,6 @@ export const useSpotifyLogin = () => {
 		window.location.href = 'https://accounts.spotify.com/authorize?' + args;
 	});
 };
-
-import { writable } from 'svelte/store';
-import type { Token, Tokens, UserProfile } from '$lib/types/spotify.js';
-import { tokenStore, userProfileStore } from '$lib/stores.ts';
-import dayjs from 'dayjs';
 
 // Create a writable Svelte store for dark mode state
 export const darkMode = writable(false);

@@ -25,7 +25,8 @@
     "!dist/**/*.spec.*"
   ],
   "peerDependencies": {
-    "svelte": "^4.0.0"
+    "svelte": "^4.0.0",
+    "svelte-kit": "^1.0.0-next.151"
   },
   "devDependencies": {
     "@melt-ui/pp": "^0.1.2",

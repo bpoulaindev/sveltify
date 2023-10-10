@@ -1,7 +1,11 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"lib": ["es2018", "dom"],
+		"allowSyntheticDefaultImports": false,
+		"lib": [
+			"es2018",
+			"dom"
+		],
 		"target": "ES6",
 		"allowJs": true,
 		"checkJs": true,
@@ -28,7 +32,7 @@
 			],
 			"$assets/*": [
 				"./src/assets/*"
-			],
+			]
 		}
 	}
 }
