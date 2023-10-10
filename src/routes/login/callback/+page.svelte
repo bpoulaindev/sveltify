@@ -2,9 +2,9 @@
     import {onMount} from "svelte";
     import {page} from '$app/stores';
     import {goto} from '$app/navigation';
-    import * as dayjs from 'dayjs'
+    import dayjs from 'dayjs'
     import {updateLocalStorageTokens} from "$src/hooks.client.ts";
-    import {tokenStore} from "$lib/stores.js";
+    import {tokenStore} from "$lib/stores.ts";
 
     interface ResponseTokens {
         accessToken: string | null;
@@ -33,11 +33,11 @@
 
             const newTokens = {
                 accessToken: {
-                    token: data.accessToken,
+                    token: data.accessToken ?? '',
                     timestamp: today
                 },
                 refreshToken: {
-                    token: data.refreshToken,
+                    token: data.refreshToken ?? '',
                     timestamp: today
                 }
             };

@@ -52,7 +52,7 @@ export const useSpotifyLogin = () => {
 
 import { writable } from 'svelte/store';
 import type { Token, Tokens, UserProfile } from '$lib/types/spotify.js';
-import { tokenStore, userProfileStore } from '$lib/stores.js';
+import { tokenStore, userProfileStore } from '$lib/stores.ts';
 import dayjs from 'dayjs';
 
 // Create a writable Svelte store for dark mode state

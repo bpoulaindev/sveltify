@@ -1,8 +1,8 @@
 <script lang="ts">
     import {onMount} from "svelte";
     import {tokenStore, artistsStore, userProfileStore} from "$lib/stores.ts";
-    import type {Tokens, UserProfile} from "$lib/types/spotify.js";
-    import {LayeredLoader} from "$components/loader";
+    import type {Tokens, UserProfile} from "$lib/types/spotify.d.ts";
+    import {LayeredLoader} from "$components/loader/index.ts";
     import {ExternalLink} from "lucide-svelte";
     import * as dayjs from "dayjs";
     import {initializeTokens, updateLocalStorageTokens, updateLocalStorageUserProfile} from "$src/hooks.client.ts";
@@ -26,7 +26,7 @@
                 })
             }).then(res => res.json()).then((data) => {
                 const today = dayjs().valueOf();
-                const newTokens = {
+                const newTokens: Tokens = {
                     accessToken: {
                         token: data.accessToken,
                         timestamp: today
@@ -35,7 +35,7 @@
                         token: data.refreshToken,
                         timestamp: today
                     }
-                } as Tokens;
+                };
                 tokenStore.set(newTokens)
                 updateLocalStorageTokens(newTokens)
                 return data.accessToken;
