@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import type { Writable } from 'svelte/store';
 
 const generateRandomString = (length: number) => {
 	let text = '';
@@ -39,7 +40,7 @@ export const useSpotifyLogin = () => {
 		const args = new URLSearchParams({
 			response_type: 'code',
 			client_id: clientId,
-			scope: scope,
+			scope: 'user-read-email user-read-private user-top-read',
 			redirect_uri: redirectUri,
 			state: state,
 			code_challenge_method: 'S256',
@@ -50,6 +51,9 @@ export const useSpotifyLogin = () => {
 };
 
 import { writable } from 'svelte/store';
+import type { Token, Tokens, UserProfile } from '$lib/types/spotify.js';
+import { tokenStore, userProfileStore } from '$lib/stores.js';
+import dayjs from 'dayjs';
 
 // Create a writable Svelte store for dark mode state
 export const darkMode = writable(false);
@@ -62,8 +66,8 @@ const toggleHtml = () => {
 };
 export const toggleDarkMode = () => {
 	darkMode.update((value) => !value);
-	localStorage.theme = darkMode ? 'dark' : 'light';
 	toggleHtml();
+	// localStorage.theme = darkMode ? 'dark' : 'light';
 };
 
 // Function to initialize dark mode based on localStorage
@@ -79,8 +83,36 @@ export const initializeDarkMode = () => {
 		darkMode.set(false);
 	}
 	// Listen for changes to the dark mode state and update localStorage accordingly
-	/* darkMode.subscribe(($darkMode) => {
+	darkMode.subscribe(($darkMode) => {
 		// toggleHtml();
-		// localStorage.setItem('darkMode', $darkMode.toString());
-	}); */
+		localStorage.setItem('theme', $darkMode ? 'dark' : 'light');
+	});
+};
+
+export const initializeTokens = () => {
+	const accessToken = JSON.parse(localStorage.getItem('access_token') ?? '{}') as Token;
+	const refreshToken = JSON.parse(localStorage.getItem('refresh_token') ?? '{}') as Token;
+	if (accessToken?.token && refreshToken?.token) {
+		tokenStore.set({
+			accessToken,
+			refreshToken
+		} as Tokens);
+	}
+	return null;
+};
+
+export const updateLocalStorageTokens = (tokens: Tokens) => {
+	localStorage.setItem('access_token', JSON.stringify(tokens?.accessToken));
+	localStorage.setItem('refresh_token', JSON.stringify(tokens?.refreshToken));
+};
+
+export const initializeUserProfile = () => {
+	const userProfile = JSON.parse(localStorage.getItem('user_profile') ?? '{}');
+	if (userProfile && userProfile.display_name) {
+		userProfileStore.set({ ...userProfile, timestamp: dayjs().valueOf() });
+	}
+	return null;
+};
+export const updateLocalStorageUserProfile = (userProfile: UserProfile) => {
+	localStorage.setItem('user_profile', JSON.stringify(userProfile));
 };

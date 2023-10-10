@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {onMount} from "svelte";
     import { Moon, SunDim } from "lucide-svelte";
     import { darkMode, toggleDarkMode } from '../../../hooks.client.ts';
 </script>

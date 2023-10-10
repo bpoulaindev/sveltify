@@ -1,8 +1,8 @@
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
+// @ts-ignore
 import plugin from 'tailwindcss/plugin';
 
-// @ts-ignore
 export default {
 	darkMode: 'class',
 	content: ['./src/**/*.{html,js,svelte,ts}'],

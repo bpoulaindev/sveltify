@@ -23,6 +23,9 @@
 			"$components/*": [
 				"./src/lib/components/*"
 			],
+			"$src/*": [
+				"./src/*"
+			],
 			"$assets/*": [
 				"./src/assets/*"
 			],

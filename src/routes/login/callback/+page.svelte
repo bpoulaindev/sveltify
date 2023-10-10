@@ -1,7 +1,17 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import { page } from '$app/stores';
-    import { goto } from '$app/navigation';
+    import {page} from '$app/stores';
+    import {goto} from '$app/navigation';
+    import * as dayjs from 'dayjs'
+    import {updateLocalStorageTokens} from "$src/hooks.client.ts";
+    import {tokenStore} from "$lib/stores.js";
+
+    interface ResponseTokens {
+        accessToken: string | null;
+        refreshToken: string | null;
+        error: string | null;
+    }
+
     onMount(async () => {
         const code = $page.url.searchParams.get('code');
         const codeVerifier = localStorage.getItem('code_verifier') ?? '';
@@ -14,12 +24,25 @@
                 code,
                 codeVerifier
             })
-        }).then(res => res.json()).then((data: {data: string, error: string}) => {
+        }).then(res => res.json()).then((data: ResponseTokens) => {
             if (data?.error) {
                 goto('/login/error')
                 return;
             }
-            localStorage.setItem('access_token', data.data)
+            const today = dayjs().valueOf()
+
+            const newTokens = {
+                accessToken: {
+                    token: data.accessToken,
+                    timestamp: today
+                },
+                refreshToken: {
+                    token: data.refreshToken,
+                    timestamp: today
+                }
+            };
+            updateLocalStorageTokens(newTokens)
+            tokenStore.set(newTokens)
             goto('/home')
             return;
         })

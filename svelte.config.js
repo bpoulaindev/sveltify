@@ -10,6 +10,7 @@ const config = {
 			runtime: 'nodejs18.x'
 		}),
 		alias: {
+			$src: 'src',
 			$lib: 'src/lib',
 			$components: 'src/lib/components',
 			$assets: 'src/assets'
