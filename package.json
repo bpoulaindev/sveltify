@@ -2,7 +2,7 @@
   "name": "sveltify",
   "version": "0.0.1",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "svelte-kit sync && vite dev",
     "build": "svelte-kit sync && vite build",
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
@@ -15,10 +15,16 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "svelte": "./dist/index.js"
+      "svelte": "./dist/index.js",
+      "import": {
+        "types": "./dist/types/spotify.d.ts"
+      },
+      "require": {
+        "types": "./dist/types/spotify.d.ts"
+      }
     }
   },
+  "types": "./dist/types/spotify.d.ts",
   "files": [
     "dist",
     "!dist/**/*.test.*",
@@ -54,7 +60,6 @@
     "vitest": "^0.34.0"
   },
   "svelte": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "type": "module",
   "dependencies": {
     "@sveltejs/adapter-vercel": "^3.0.3",
