@@ -4,7 +4,7 @@
     import type {Tokens, UserProfile} from "$lib/types/spotify.d.ts";
     import {LayeredLoader} from "$components/loader/index.ts";
     import {ExternalLink} from "lucide-svelte";
-    import * as dayjs from "dayjs";
+    import dayjs from "dayjs";
     import {initializeTokens, updateLocalStorageTokens, updateLocalStorageUserProfile} from "$src/hooks.client.ts";
     import {initializeUserProfile} from "$src/hooks.client.js";
 
@@ -15,14 +15,14 @@
             window.location.href = '/login';
         }
         const tokens = $tokenStore;
-        if (dayjs().valueOf() - tokens?.refreshToken.timestamp > 3600000) {
-            tokens.accessToken.token = await fetch('/api/spotify/refresh', {
+        if (dayjs().valueOf() - (tokens?.refreshToken?.timestamp ?? 0) > 3600000) {
+            const newAccessToken = await fetch('/api/spotify/refresh', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: JSON.stringify({
-                    refreshToken: tokens.refreshToken.token
+                    refreshToken: tokens?.refreshToken?.token || ''
                 })
             }).then(res => res.json()).then((data) => {
                 const today = dayjs().valueOf();
@@ -40,6 +40,7 @@
                 updateLocalStorageTokens(newTokens)
                 return data.accessToken;
             })
+            tokens && tokens.accessToken && tokens.accessToken.token && (tokens.accessToken.token = newAccessToken);
         }
         if ($userProfileStore && $userProfileStore.timestamp < dayjs().valueOf() - 3600000) {
             return;
@@ -50,7 +51,7 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                accessToken: tokens?.accessToken.token
+                accessToken: tokens?.accessToken?.token || ''
             })
         }).then(res => res.json()).then((data: UserProfile) => {
             userProfileStore.set({...data, timestamp: dayjs().valueOf()})
@@ -62,7 +63,7 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: JSON.stringify({
-                accessToken: tokens?.accessToken.token
+                accessToken: tokens?.accessToken?.token || ''
             })
         }).then(res => res.json()).then((data) => {
             console.log('pitié pitié', data)

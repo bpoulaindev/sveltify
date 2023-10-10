@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {ThemeSwitch} from "$components/theme_switch";
+    import {ThemeSwitch} from "$components/theme_switch/index.ts";
     import {page} from '$app/stores';
     import logo from "$assets/logo_nobg.svg";
     import lightLogo from "$assets/logo_nobg_light.svg";

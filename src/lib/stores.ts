@@ -1,4 +1,9 @@
-import type { UserProfile, SpotifyApiResponse, SpotifyArtist, Tokens } from '$lib/types/spotify.js';
+import type {
+	UserProfile,
+	SpotifyApiResponse,
+	SpotifyArtist,
+	Tokens
+} from '$lib/types/spotify.d.ts';
 import { writable } from 'svelte/store';
 
 // export const useTokens: () => Writable<Tokens> = () => useWritable<Tokens | null>('tokens', null);

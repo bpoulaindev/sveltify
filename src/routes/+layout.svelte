@@ -1,6 +1,6 @@
 <script>
     import '../app.css';
-    import {Navbar} from '$lib/components/navbar';
+    import {Navbar} from '$lib/components/navbar/index.ts';
     import {initializeDarkMode, initializeTokens} from '../hooks.client.ts';
     import {onMount} from 'svelte';
 

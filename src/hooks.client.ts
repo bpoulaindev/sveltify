@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { writable } from 'svelte/store';
 import type { Token, Tokens, UserProfile } from '$lib/types/spotify.d.ts';
-import { tokenStore, userProfileStore } from '$lib/stores.ts';
+import { tokenStore, userProfileStore } from '$lib/stores.js';
 import dayjs from 'dayjs';
 
 const generateRandomString = (length: number) => {

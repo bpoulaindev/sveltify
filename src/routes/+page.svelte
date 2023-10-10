@@ -1,7 +1,7 @@
 <script>
-    import {GrainSVG} from "$components/grain_svg";
+    import {GrainSVG} from "$components/grain_svg/index.ts";
     import {ArrowRightCircle} from "lucide-svelte";
-    import {Planets} from "$components/planets";
+    import {Planets} from "$components/planets/index.ts";
 </script>
 <div class="flex flex-col relative w-full h-[calc(100dvh)] max-h-[calc(100dvh)] items-center justify-start">
     <GrainSVG className="top-3/4"/>
