@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {tokenStore, useTopArtists, userProfileStore} from "$lib/stores.ts";
+    import {tokenStore, artistsStore, userProfileStore} from "$lib/stores.ts";
     import type {Tokens, UserProfile} from "$lib/types/spotify.js";
     import {LayeredLoader} from "$components/loader";
     import {ExternalLink} from "lucide-svelte";
@@ -8,7 +8,6 @@
     import {initializeTokens, updateLocalStorageTokens, updateLocalStorageUserProfile} from "$src/hooks.client.ts";
     import {initializeUserProfile} from "$src/hooks.client.js";
 
-    const topArtists = useTopArtists();
     onMount(async () => {
         initializeTokens();
         initializeUserProfile();
@@ -67,6 +66,7 @@
             })
         }).then(res => res.json()).then((data) => {
             console.log('pitié pitié', data)
+            artistsStore.set(data)
         })
     })
 </script>
