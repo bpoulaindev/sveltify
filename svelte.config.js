@@ -6,6 +6,12 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 /** @type {import('@sveltejs/kit').Config}*/
 const config = {
 	preprocess: sequence([vitePreprocess(), preprocessMeltUI()]),
+	onwarn: (warning, handler) => {
+		if (warning.code === 'a11y-click-events-have-key-events') return;
+
+		// Handle all other warnings normally
+		handler(warning);
+	},
 	kit: {
 		adapter: adapter({
 			runtime: 'nodejs18.x'

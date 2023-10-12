@@ -3,11 +3,10 @@
     import {page} from '$app/stores';
     import logo from "$assets/logo_nobg.svg";
     import lightLogo from "$assets/logo_nobg_light.svg";
-    import {darkMode, initializeTokens} from "$src/hooks.client.js";
+    import {darkMode} from "$src/hooks.client.js";
     import {UserCircle2} from "lucide-svelte";
     import {onMount} from "svelte";
     import {tokenStore} from "$lib/stores.ts";
-    import type {Tokens} from "$lib/types/spotify.js";
 
     onMount(() => {
         // initializeTokens(tokens);
@@ -24,7 +23,7 @@
         }
     }
 </script>
-<nav class="flex bg-cream dark:bg-slate-950 shadow w-full max-w-full px-2 py-1">
+<nav class="flex rounded-2xl bg-white border-2 border-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 max-w-auto px-2 py-1 m-2">
     <div class="flex w-full items-center">
         <a class="flex items-center grow" href="/">
             <img src={$darkMode ? logo : lightLogo} alt="logo" class="w-3.5 h-3.5">

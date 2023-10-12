@@ -1,7 +1,19 @@
 import { dev } from '$app/environment';
 import { writable } from 'svelte/store';
-import type { Token, Tokens, UserProfile } from '$lib/types/spotify.d.ts';
-import { tokenStore, userProfileStore } from '$lib/stores.js';
+import type {
+	SpotifyApiResponse,
+	SpotifyArtist,
+	SpotifyTrack,
+	Token,
+	Tokens,
+	UserProfile
+} from '$lib/types/spotify.d.ts';
+import {
+	artistsRankingStore,
+	tokenStore,
+	tracksRankingStore,
+	userProfileStore
+} from '$lib/stores.js';
 import dayjs from 'dayjs';
 
 const generateRandomString = (length: number) => {
@@ -42,7 +54,8 @@ export const useSpotifyLogin = () => {
 		const args = new URLSearchParams({
 			response_type: 'code',
 			client_id: clientId,
-			scope: 'user-read-email user-read-private user-top-read',
+			scope:
+				'user-read-email user-read-private user-top-read streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
 			redirect_uri: redirectUri,
 			state: state,
 			code_challenge_method: 'S256',
@@ -102,14 +115,42 @@ export const updateLocalStorageTokens = (tokens: Tokens) => {
 	localStorage.setItem('access_token', JSON.stringify(tokens?.accessToken));
 	localStorage.setItem('refresh_token', JSON.stringify(tokens?.refreshToken));
 };
-
+export const updateLocalStorage = (key: string, value: string) => {
+	localStorage.setItem(key, value);
+};
 export const initializeUserProfile = () => {
-	const userProfile = JSON.parse(localStorage.getItem('user_profile') ?? '{}');
+	const userProfile = JSON.parse(localStorage.getItem('user_card') ?? '{}');
 	if (userProfile && userProfile.display_name) {
 		userProfileStore.set({ ...userProfile, timestamp: dayjs().valueOf() });
 	}
 	return null;
 };
 export const updateLocalStorageUserProfile = (userProfile: UserProfile) => {
-	localStorage.setItem('user_profile', JSON.stringify(userProfile));
+	localStorage.setItem('user_card', JSON.stringify(userProfile));
+};
+
+export const initializeArtistsRanking = () => {
+	const artistsRanking = JSON.parse(localStorage.getItem('artists_ranking') ?? '{}');
+	if (artistsRanking && artistsRanking?.total > 0) {
+		artistsRankingStore.set({ ...artistsRanking, timestamp: dayjs().valueOf() });
+	}
+	return null;
+};
+export const updateLocalStorageArtistsRanking = (
+	artistsRanking: SpotifyApiResponse<SpotifyArtist>
+) => {
+	localStorage.setItem('artists_ranking', JSON.stringify(artistsRanking));
+};
+
+export const initializeTracksRanking = () => {
+	const tracksRanking = JSON.parse(localStorage.getItem('tracks_ranking') ?? '{}');
+	if (tracksRanking && tracksRanking?.total > 0) {
+		tracksRankingStore.set({ ...tracksRanking, timestamp: dayjs().valueOf() });
+	}
+	return null;
+};
+export const updateLocalStorageTracksRanking = (
+	tracksRanking: SpotifyApiResponse<SpotifyTrack>
+) => {
+	localStorage.setItem('tracks_ranking', JSON.stringify(tracksRanking));
 };

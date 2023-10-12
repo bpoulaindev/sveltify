@@ -15,7 +15,8 @@ export const POST: RequestHandler = async ({ url, request }) => {
 		redirect_uri: redirectUri,
 		client_id: clientId,
 		code_verifier: bodyParams.codeVerifier,
-		scope: 'user-read-email user-read-private user-top-read'
+		scope:
+			'user-read-email user-read-private user-top-read streaming user-read-playback-state user-modify-playback-state user-read-currently-playing'
 	});
 	const { accessToken, refreshToken, error } = await fetch(
 		'https://accounts.spotify.com/api/token',
