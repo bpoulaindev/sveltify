@@ -14,31 +14,30 @@
         };
     });
     let svgColor = {
-        center: '#030616',
+        center: '#0B0A0B',
         circle: '#36309D',
-        background: '#030616'
+        background: '#0B0A0B'
     };
     darkMode.subscribe((value) => {
         svgColor = value
             ? {
-                center: '#030616',
+                center: '#0B0A0B',
                 circle: dimensions.width < 750 ? '#6466E9' : '#36309D',
-                background: '#030616'
+                background: '#0B0A0B'
             }
             : {
                 center: '#c7c0c0',
                 circle: '#6466E9',
-                background: '#FFFAF5'
+                background: '#F4F4F5'
             };
     });
 </script>
 
 <div class="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 ${className}">
     <svg
-            class="animate-[spin_30s_linear_infinite] sm:animate-[spin_60s_linear_infinite] rounded-full  dark:blur-none"
+            class="animate-[spin_30s_linear_infinite] sm:animate-[spin_60s_linear_infinite] rounded-full"
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 700 700"
             width={dimensions.width}
             height={dimensions.height}

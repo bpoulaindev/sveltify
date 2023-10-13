@@ -13,7 +13,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		});
 		const devicesData: SpotifyDevicesResponse = await devices.json();
 		const device = devicesData?.devices.find((device) => device.name === 'SvelteKit');
-		const result = await fetch('https://api.spotify.com/v1/me/player', {
+		await fetch('https://api.spotify.com/v1/me/player', {
 			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${bodyParams.accessToken}`
@@ -23,9 +23,10 @@ export const POST: RequestHandler = async ({ request }) => {
 				play: true
 			})
 		});
-		const data = await result.json();
 		console.log('creating new device');
-		return json(data);
+		return json({
+			data: 'ok'
+		});
 	} catch (error) {
 		console.log('error while making device active', error);
 		return json(error);

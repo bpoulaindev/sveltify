@@ -44,7 +44,7 @@
                         #{index + 1}
                     </span>
                     <img src={artist.images[1].url} alt="profile"
-                         class="rounded-lg w-10 h-10 min-h-10 min-w-[80px] object-cover bg-center"
+                         class="rounded-lg w-10 h-10 min-h-10 min-w-[80px] object-cover bg-center border-2 border-zinc-200 dark:border-zinc-700"
                     />
                     <div class="flex flex-col ml-2 w-[calc(100%-80px-64px)]">
                         <a href={artist.external_urls.spotify}
