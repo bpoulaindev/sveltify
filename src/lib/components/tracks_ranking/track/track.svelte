@@ -29,9 +29,9 @@
 		}
 	}}
         on:click={() => changeCurrentTrack(track)}
-        class="flex {$animateTrack && 'blur-sm !bg-zinc-300 dark:!bg-black'} transition-all duration-300  items-center justify-start w-full h-12 my-0.5 sm:my-1 py-1 px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        class="flex {$animateTrack && 'blur-sm !bg-zinc-300 dark:!bg-black'} transition-all duration-300  items-center justify-start w-full h-12 my-0.5 sm:my-1 py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800"
 >
-	<span class="text-xl sm:text-3xl dark:text-white w-6 sm:w-8 min-w-[48px] sm:min-w-8 mr-1">
+	<span class="text-lg sm:text-3xl dark:text-white w-4 sm:w-8 min-w-[32px] sm:min-w-8 mr-1">
 		#{index + 1}
 	</span>
     <img
@@ -41,13 +41,28 @@
     />
     <div class="flex flex-col ml-2 grow">
         <span
-                class="group flex items-center w-auto sm:w-fit font-semibold tracking-wide dark:text-white ease-in duration-100"
+                class="group flex items-center w-auto text-sm sm:text-base sm:w-fit font-semibold tracking-wide dark:text-white ease-in duration-100"
         >
             {track.name}
         </span>
-        <div class="flex items-center mt-1">
+        <div class="flex flex-wrap items-center mt-0.5 sm:mt-1">
+            {#if track.artists.length > 0}
+                <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    {track.artists[0].name}
+                </span>
+            {/if}
+            {#if track.album.release_date}
+                <span class="ml-0.5 sm:ml-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    - {track.album.release_date.split('-')[0]}
+                </span>
+            {/if}
+        </div>
+        <div class="flex items-center mt-0.5 sm:mt-1">
             {#if track.explicit}
                 <Tag classes="mr-1" label="Explicit" color="red"/>
+            {/if}
+            {#if track.popularity > 50}
+                <Tag classes="mr-1" label="Popular" color="green"/>
             {/if}
         </div>
     </div>

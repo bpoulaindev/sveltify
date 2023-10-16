@@ -23,6 +23,9 @@ export default {
 				'pulse-1': 'pulse 1s linear infinite',
 				'pulse-2': 'pulse 1.5s linear infinite',
 				'pulse-3': 'pulse 2s linear infinite'
+			},
+			fontSize: {
+				'2xs': '0.625rem'
 			}
 		},
 		spacing: {
@@ -30,6 +33,7 @@ export default {
 			0.25: '2px',
 			'1/2': '4px',
 			0.5: '4px',
+			0.75: '6px',
 			1: '8px',
 			1.5: '12px',
 			2: '16px',
@@ -53,7 +57,12 @@ export default {
 			22: '176px',
 			24: '192px',
 			28: '224px',
-			40: '240px'
+			30: '240px',
+			32: '256px',
+			36: '288px',
+			40: '320px',
+			80: '640px',
+			120: '960px'
 		},
 		typography: (theme: any) => ({
 			DEFAULT: {

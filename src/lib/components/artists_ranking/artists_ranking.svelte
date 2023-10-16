@@ -32,20 +32,20 @@
         })
     })
 </script>
-<div class="flex w-full max-h-[calc(100dvh-432px)] sm:max-h-[calc(100dvh-302px)] lg:max-h-[calc(100dvh-222px)] {classes}">
+<div class="flex w-full max-h-[calc(100dvh-486px)] sm:max-h-[calc(100dvh-388px)] lg:max-h-[calc(100dvh-228px)] {classes}">
     {#if !$artistsRankingStore?.total || $artistsRankingStore?.total === 0}
-        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl p-2 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
             {#each Array(10) as _}
-                <div class="animate-pulse-2 w-full flex h-12 min-h-[96px] my-1">
+                <div class="animate-pulse-2 w-full flex h-12 min-h-[80px] sm:min-h-[96px] my-1">
                     <div class="flex w-full h-full bg-zinc-300 dark:bg-zinc-700 rounded-xl"/>
                 </div>
             {/each}
         </div>
     {:else}
-        <div class="flex flex-col items-center px-1 sm:px-2 py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
             {#each $artistsRankingStore.items as artist, index}
-                <div class="flex items-center justify-start w-full h-12 my-0.5 sm:my-1 py-1 px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100">
-                    <span class="text-xl sm:text-3xl dark:text-white w-6 sm:w-8 min-w-6 sm:min-w-8 mr-1">
+                <div class="flex items-center justify-start w-full my-0.5 sm:my-1 py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100">
+                    <span class="text-lg sm:text-3xl dark:text-white w-4 sm:w-8 min-w-4 sm:min-w-8 mr-1">
                         #{index + 1}
                     </span>
                     <img src={artist.images[1].url} alt="profile"
@@ -55,16 +55,23 @@
                         <a href={artist.external_urls.spotify}
                            target="_blank"
                            title="Open Spotify profile"
-                           class="group flex items-center font-semibold tracking-wide dark:text-white hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
+                           class="group flex items-center w-fit text-sm sm:text-normal font-semibold tracking-wide dark:text-white hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
                             {artist.name}
                             <ExternalLink class="h-2 w-2 ml-1"/>
                         </a>
-                        <div class="flex items-center mt-1 flex-wrap w-fit h-4 overflow-hidden">
+                        <div class="flex items-center mt-0.5 sm:mt-1 flex-wrap w-fit h-[44px] sm:h-4 overflow-hidden">
+                            {#if artist.popularity > 50}
+                                <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Popular" color="indigo"/>
+                            {:else if artist.popularity > 30}
+                                <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Average" color="zinc"/>
+                            {:else}
+                                <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Underground" color="zinc"/>
+                            {/if}
                             {#each artist.genres as genre}
-                                <Tag classes="mr-1 mb-1" label="{genre}"/>
+                                <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="{genre}"/>
                             {/each}
                             {#if artist.genres.length === 0}
-                                <Tag classes="mr-1 mb-1" label="Uncategorized" color="zinc"/>
+                                <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Uncategorized" color="zinc"/>
                             {/if}
                         </div>
                     </div>

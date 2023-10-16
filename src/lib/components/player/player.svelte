@@ -171,49 +171,22 @@
     }
 </script>
 
-<div class="flex w-fit items-center px-2 h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
-    <div class="flex flex-col">
-        <div class="flex w-full items-center justify-center">
-            <button on:click={() => skipSong('previous')} class="mr-2 group cursor-pointer">
-                <SkipBack
-                        class="w-4 h-4 dark:text-zinc-200 stroke-[2px] hover:text-zinc-500 dark:group-hover:text-zinc-400"/>
-            </button>
-            <button on:click={play}
-                    class="text-white mr-2 cursor-pointer rounded-full group bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-400 p-1.5 flex items-center justify-center">
-                {#if !$playerState || $playerState?.paused}
-                    {#if $loadingPlayer}
-                        <Loader2 class="w-4 h-4 text-zinc-950 stroke-[2px] animate-spin"/>
-                    {:else}
-                        <Play class="w-4 h-4 pl-0.5 text-zinc-950 stroke-[2.5px]"/>
-                    {/if}
-                {:else}
-                    <Pause class="w-4 h-4 text-zinc-950 stroke-[2px]"/>
-                {/if}
-            </button>
-            <button on:click={() => skipSong('next')} class="group cursor-pointer">
-                <SkipForward
-                        class="w-4 h-4 dark:text-zinc-200 stroke-[2px] hover:text-zinc-500 dark:group-hover:text-zinc-400"
-                />
-            </button>
-        </div>
-        <Progress {playerState} on:seek={seek} classes="mt-2 max-w-10"/>
-    </div>
+<div class="flex lg:flex-row flex-col w-fit lg:justify-between items-center px-2 sm:px-4 lg:px-2 py-2 lg:py-0 h-[212px] lg:h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
     {#if $playerState?.track_window?.current_track && !$loadingPlayer}
-        <div class="flex items-center ml-4" in:slide="{{axis: 'x', duration: 400}}"
-             out:slide="{{axis: 'x', duration: 400, delay: 150}}">
+        <div class="flex items-center mr-0 lg:mr-4 w-full lg:w-[360px] lg:min-w-[360px] grow">
             <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
                  alt="Album cover"
-                 class="w-10 h-10 rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
+                 class="w-12 h-12 lg:w-10 lg:h-10 rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
             <div class="flex flex-col ml-2">
-                <span class="dark:text-white font-semibold tracking-wide text-lg">
+                <span class="dark:text-white font-semibold tracking-wide text-base lg:text-lg">
                     {$playerState?.track_window?.current_track?.name}
                 </span>
-                <div class="flex items-center">
+                <div class="flex items-center flex-wrap">
                     {#each $playerState?.track_window?.current_track?.artists as artist, index}
                         <a href={artist.external_urls?.spotify ?? artist.href}
                            target="_blank"
                            title="Open Spotify profile"
-                           class="group flex items-center cursor-pointer tracking-tight text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
+                           class="group whitespace-break-spaces inline-flex items-center cursor-pointer tracking-tight text-sm sm:text-base text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
                             {artist.name}
                             {#if index !== $playerState?.track_window?.current_track?.artists.length - 1}
                                 <span class="mr-0.5">,</span>
@@ -223,5 +196,39 @@
                 </div>
             </div>
         </div>
+    {:else}
+        <div class="flex w-full h-14 py-2 animate-pulse-3 items-center">
+            <span class="w-12 h-12 sm:w-10 sm:h-10 rounded-xl bg-zinc-800"/>
+            <div class="flex flex-col ml-2 grow">
+                <span class="bg-zinc-800 h-2 rounded-full w-2/3"/>
+                <span class="bg-zinc-800 mt-2 h-1 rounded-full w-1/2"/>
+            </div>
+        </div>
     {/if}
+    <div class="flex flex-col-reverse lg:flex-col w-full lg:w-full">
+        <div class="flex w-full items-center justify-center -mt-3 lg:mt-0">
+            <button on:click={() => skipSong('previous')} class="mr-2 group cursor-pointer">
+                <SkipBack
+                        class="w-3 h-3 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"/>
+            </button>
+            <button on:click={play}
+                    class="text-white mr-2 cursor-pointer rounded-full group p-0.5 flex items-center justify-center">
+                {#if !$playerState || $playerState?.paused}
+                    {#if $loadingPlayer}
+                        <Loader2 class="w-3 h-3 sm:w-4 sm:h-4 text-zinc-950 dark:text-white stroke-[2px] animate-spin"/>
+                    {:else}
+                        <Play class="w-4 h-4 pl-0.5 fill-zinc-950 text-zinc-950 dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"/>
+                    {/if}
+                {:else}
+                    <Pause class="w-4 h-4 stroke-0 fill-zinc-950 text-white dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400"/>
+                {/if}
+            </button>
+            <button on:click={() => skipSong('next')} class="group cursor-pointer">
+                <SkipForward
+                        class="w-3 h-3 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
+                />
+            </button>
+        </div>
+        <Progress {playerState} on:seek={seek} classes="mb-2 mt-1 lg:mb-0 lg:mt-0"/>
+    </div>
 </div>

@@ -20,6 +20,6 @@
     }
 </script>
 
-<span class="inline-flex whitespace-nowrap capitalize items-center rounded-md px-1 py-0.5 text-xs font-medium ring-1 ring-inset dark:ring-2 {colorClasses[color]} {classes}">
+<span class="inline-flex whitespace-nowrap capitalize items-center rounded-md px-0.75 xs:px-1 py-0.25 xs:py-0.5 text-2xs xs:text-xs font-normal xs:font-medium ring-1 ring-inset dark:ring-2 {colorClasses[color]} {classes}">
     {label}
 </span>
