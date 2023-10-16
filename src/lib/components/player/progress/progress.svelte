@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {Window} from "@types/spotify-web-playback-sdk";
-    import {debounce} from "lodash";
+    import * as lodash from "lodash";
     import {createSlider, melt} from '@melt-ui/svelte';
     import {writable} from "svelte/store";
     import {createEventDispatcher} from "svelte";
@@ -13,7 +13,7 @@
     $: {
         progress.set([$playerState ? ($playerState?.position * 100) / $playerState?.duration : 0]);
     }
-    const debouncePositionChange = debounce(() => {
+    const debouncePositionChange = lodash?.debounce(() => {
         const rangePosition = $range?.style?.split('right:')?.[1]?.split('%')?.[0]
         const position = 100 - parseFloat(rangePosition, 10);
         seekPosition(position);
