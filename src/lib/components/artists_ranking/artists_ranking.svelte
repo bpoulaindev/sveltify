@@ -59,7 +59,7 @@
                             {artist.name}
                             <ExternalLink class="h-1.5 w-1.5 sm:h-2 sm:w-2 ml-1"/>
                         </a>
-                        <div class="flex items-center mt-0.5 sm:mt-1 flex-wrap w-fit h-[48px] sm:h-4 overflow-hidden">
+                        <div class="flex items-center mt-0.5 sm:mt-1 flex-wrap w-fit h-[44px] xs:h-[48px] sm:h-4 overflow-hidden">
                             {#if artist.popularity > 50}
                                 <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Popular" color="indigo"/>
                             {:else if artist.popularity > 30}
