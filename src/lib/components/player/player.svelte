@@ -36,12 +36,29 @@
             }
         })
     }
+    const makeDeviceActive = async () => {
+        await fetch('/api/spotify/playback/transfer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                deviceId: deviceId
+            })
+        }).then(res => res.json()).then(() => {
+            console.log('sucess transfering the music')
+        }).catch(err => {
+            console.error(err)
+        })
+    }
     $: {
         if (currentTrack && $player) {
             $player.getCurrentState().then(async (state) => {
                 if (!state) {
                     console.error('User is not playing music through the Web Playback SDK');
-                    return;
+                    console.log('attempting to make device active')
+                    await makeDeviceActive();
                 }
                 console.log('sending this track to the queue', currentTrack)
                 const success = await digestNextSong(currentTrack.detail.uri)
@@ -117,22 +134,6 @@
                 });
         };
     });
-    const makeDeviceActive = async () => {
-        await fetch('/api/spotify/playback/transfer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: JSON.stringify({
-                accessToken: accessToken,
-                deviceId: deviceId
-            })
-        }).then(res => res.json()).then(() => {
-            console.log('sucess transfering the music')
-        }).catch(err => {
-            console.error(err)
-        })
-    }
     const play = async () => {
         if (!$playerState) {
             console.error('User is not playing music through the Web Playback SDK');
