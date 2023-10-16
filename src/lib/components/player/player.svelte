@@ -171,7 +171,7 @@
     }
 </script>
 
-<div class="flex w-fit items-center px-2 h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 transition-all duration-1000 ease-linear {classes}">
+<div class="flex w-fit items-center px-2 h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
     <div class="flex flex-col">
         <div class="flex w-full items-center justify-center">
             <button on:click={() => skipSong('previous')} class="mr-2 group cursor-pointer">

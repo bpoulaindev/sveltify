@@ -19,7 +19,10 @@ export default {
 			animation: {
 				'spin-1': 'spin 1s linear infinite',
 				'spin-2': 'spin 1.5s linear infinite',
-				'spin-3': 'spin 2s linear infinite'
+				'spin-3': 'spin 2s linear infinite',
+				'pulse-1': 'pulse 1s linear infinite',
+				'pulse-2': 'pulse 1.5s linear infinite',
+				'pulse-3': 'pulse 2s linear infinite'
 			}
 		},
 		spacing: {
@@ -42,6 +45,7 @@ export default {
 			9: '72px',
 			10: '80px',
 			12: '96px',
+			13: '104px',
 			14: '112px',
 			16: '128px',
 			18: '144px',

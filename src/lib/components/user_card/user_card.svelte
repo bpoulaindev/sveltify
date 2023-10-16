@@ -29,13 +29,19 @@
 </script>
 
 {#if !$userProfileStore?.display_name}
-    <div class="flex animate-pulse items-center h-14 w-full sm:w-[400px] rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800">
+    <div class="flex animate-pulse items-center h-14 w-full sm:w-[400px] rounded-2xl p-2 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700">
+        <span class="rounded-lg w-10 h-10 min-h-10 min-w-10 bg-gray-200 dark:bg-zinc-800"/>
+        <div class="flex flex-col ml-2 grow">
+            <span class="grow h-1 bg-zinc-800 rounded-full"/>
+            <span class="grow mt-2 h-1 bg-zinc-800 rounded-full"/>
+            <span class="grow mt-2 h-1 bg-zinc-800 rounded-full"/>
+        </div>
     </div>
 {:else}
-    <div class="flex min-w-fit sm:w-fit w-full items-center px-2 h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700">
+    <div class="flex min-w-fit sm:w-fit w-full overflow-hidden items-center px-0 lg:px-2 h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700">
         <img src={$userProfileStore.images[1].url} alt="profile"
-             class="rounded-lg w-10 h-10 min-h-10 min-w-10 object-cover bg-center ring-2 ring-zinc-200 dark:ring-zinc-700"/>
-        <div class="flex flex-col ml-2">
+             class="rounded-lg w-[108px] h-[108px] lg:w-10 lg:h-10 lg:min-h-10 lg:min-w-10 object-cover bg-center lg:ring-2 lg:ring-zinc-200 dark:ring-zinc-700"/>
+        <div class="hidden lg:flex flex-col ml-2 ">
             <a href={$userProfileStore.external_urls.spotify}
                target="_blank"
                title="Open Spotify profile"

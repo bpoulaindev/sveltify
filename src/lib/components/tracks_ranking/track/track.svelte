@@ -1,5 +1,6 @@
 <script lang="ts">
     import {Tag} from '$components/tag/index';
+    import {darkMode} from '$src/hooks.client.ts';
     import {ExternalLink} from 'lucide-svelte';
     import type {SpotifyTrack} from '$lib/types/spotify';
     import {createEventDispatcher} from 'svelte';
@@ -15,7 +16,7 @@
         dispatch('play', track);
         setTimeout(() => {
             animateTrack.set(false)
-        }, 300)
+        }, 200)
     };
 </script>
 
@@ -28,26 +29,22 @@
 		}
 	}}
         on:click={() => changeCurrentTrack(track)}
-        class="flex {$animateTrack && '!bg-red-300'} items-center justify-start w-full h-12 my-1 py-1 px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100"
+        class="flex {$animateTrack && 'blur-sm !bg-zinc-300 dark:!bg-black'} transition-all duration-300  items-center justify-start w-full h-12 my-0.5 sm:my-1 py-1 px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800"
 >
-	<span class="text-3xl dark:text-white w-8 mr-1">
+	<span class="text-xl sm:text-3xl dark:text-white w-6 sm:w-8 min-w-[48px] sm:min-w-8 mr-1">
 		#{index + 1}
 	</span>
     <img
             src={track.album.images[1].url}
             alt="profile"
-            class="rounded-lg w-10 h-10 min-h-10 min-w-10 object-cover bg-center border-2 border-zinc-200 dark:border-zinc-700"
+            class="rounded-lg w-9 h-9 min-w-9 min-h-9 sm:w-10 sm:h-10 sm:min-h-10 sm:min-w-10 object-cover bg-center border-2 border-zinc-200 dark:border-zinc-700"
     />
     <div class="flex flex-col ml-2 grow">
-        <a
-                href={track.external_urls.spotify}
-                target="_blank"
-                title="Open Spotify profile"
-                class="group flex items-center w-fit font-semibold tracking-wide dark:text-white hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100"
+        <span
+                class="group flex items-center w-auto sm:w-fit font-semibold tracking-wide dark:text-white ease-in duration-100"
         >
             {track.name}
-            <ExternalLink class="h-2 w-2 ml-1"/>
-        </a>
+        </span>
         <div class="flex items-center mt-1">
             {#if track.explicit}
                 <Tag classes="mr-1" label="Explicit" color="red"/>
@@ -55,3 +52,6 @@
         </div>
     </div>
 </div>
+
+<style>
+</style>
