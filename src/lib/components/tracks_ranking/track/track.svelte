@@ -29,7 +29,7 @@
 		}
 	}}
         on:click={() => changeCurrentTrack(track)}
-        class="flex {$animateTrack && 'blur-sm !bg-zinc-300 dark:!bg-black'} transition-all duration-300  items-center justify-start w-full h-12 my-0.5 sm:my-1 py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        class="flex {$animateTrack && 'blur-sm !bg-zinc-300 dark:!bg-black'} transition-all duration-300  items-center justify-start w-full my-0.5 sm:my-1 py-0.5 sm:py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800"
 >
 	<span class="text-lg sm:text-3xl dark:text-white w-4 sm:w-8 min-w-[32px] sm:min-w-8 mr-1">
 		#{index + 1}

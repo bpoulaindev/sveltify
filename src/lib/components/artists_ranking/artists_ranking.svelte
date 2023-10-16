@@ -44,7 +44,7 @@
     {:else}
         <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
             {#each $artistsRankingStore.items as artist, index}
-                <div class="flex items-center justify-start w-full my-0.5 sm:my-1 py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100">
+                <div class="flex items-center justify-start w-full my-0.5 sm:my-1 py-0.5 sm:py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100">
                     <span class="text-lg sm:text-3xl dark:text-white w-4 sm:w-8 min-w-4 sm:min-w-8 mr-1">
                         #{index + 1}
                     </span>
@@ -57,9 +57,9 @@
                            title="Open Spotify profile"
                            class="group flex items-center w-fit text-sm sm:text-normal font-semibold tracking-wide dark:text-white hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
                             {artist.name}
-                            <ExternalLink class="h-2 w-2 ml-1"/>
+                            <ExternalLink class="h-1.5 w-1.5 sm:h-2 sm:w-2 ml-1"/>
                         </a>
-                        <div class="flex items-center mt-0.5 sm:mt-1 flex-wrap w-fit h-[44px] sm:h-4 overflow-hidden">
+                        <div class="flex items-center mt-0.5 sm:mt-1 flex-wrap w-fit h-[48px] sm:h-4 overflow-hidden">
                             {#if artist.popularity > 50}
                                 <Tag classes="mr-0.5 sm:mr-1 mb-0.5 sm:mb-1" label="Popular" color="indigo"/>
                             {:else if artist.popularity > 30}
