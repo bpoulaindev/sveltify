@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Supreme';
+    src: url('./assets/Supreme-Variable.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}

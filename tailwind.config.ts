@@ -12,6 +12,9 @@ export default {
 				cream: '#FFFAF5',
 				mint: '#68969C'
 			},
+			fontFamily: {
+				supreme: ['Supreme', 'serif']
+			},
 			screens: {
 				xs: '400px',
 				over500: '500px'

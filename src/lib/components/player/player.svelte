@@ -239,7 +239,7 @@
         id="portal"
         class="flex lg:flex-row flex-col w-fit lg:justify-between items-center px-2 sm:px-4 lg:px-2 py-2 lg:py-0 h-[212px] lg:h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
     {#if $playerState?.track_window?.current_track && !$loadingPlayer}
-        <div class="flex items-center justify-between mr-0 lg:mr-4 w-full lg:w-[360px] lg:min-w-[360px] grow"
+        <div class="flex items-center justify-between mr-0 w-full lg:w-[500px] lg:min-w-[500px]"
              in:slide="{{axis: 'x', duration: 400, delay: 150}}"
              out:slide="{{axis: 'x', duration: 400}}">
             <div class="flex items-center">
@@ -265,7 +265,12 @@
                     </div>
                 </div>
             </div>
-            <Heart class="{$likedTracks?.[$playerState?.track_window.current_track.id] ? 'h-3.5 w-3.5 fill-indigo-500 dark:fill-indigo-300 text-white dark:text-zinc-900' : 'h-3 w-3 text-zinc-950 dark:text-zinc-700'}"/>
+            <div class="flex">
+                <div class="flex flex-col items-center justify-center">
+                    <Heart class="{$likedTracks?.[$playerState?.track_window.current_track.id] ? 'h-3.5 w-3.5 fill-green-500 dark:fill-green-300 text-white dark:text-zinc-900' : 'h-3 w-3 text-zinc-950 dark:text-zinc-700'}"/>
+                </div>
+                <span class="hidden lg:flex mx-4 h-10 w-0.25 rounded-full bg-zinc-200 dark:bg-zinc-700"/>
+            </div>
         </div>
     {:else}
         <div class="flex w-full h-12 py-1 animate-pulse-3 items-center"
