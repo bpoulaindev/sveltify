@@ -14,7 +14,7 @@
     import {Player} from "$components/player/index";
     import {writable} from "svelte/store";
 
-    let currentTrack: SpotifyTrack | null = null;
+    let currentTrack: CustomEvent<SpotifyTrack | null>;
     const changeCurrentTrack = (track: SpotifyTrack) => {
         currentTrack = track;
     }
@@ -57,7 +57,6 @@
         }
     })
     const activeTab = writable<'artists' | 'tracks'>('artists');
-    console.log('screenWidth', screenWidth)
 </script>
 
 <svelte:window bind:innerWidth={screenWidth}/>
@@ -68,11 +67,8 @@
             <LayeredLoader/>
         </div>
     {:else}
-        <div class="flex items-start lg:items-center w-full flex-col sm:flex-row">
-            <UserCard bind:accessToken="{$tokenStore.accessToken.token}" classes="flex sm:hidden lg:flex"/>
-            <Player bind:accessToken="{$tokenStore.accessToken.token}" bind:currentTrack={currentTrack}
-                    classes="mt-1 sm:mt-0 lg:ml-2 w-full"/>
-        </div>
+        <Player bind:accessToken="{$tokenStore.accessToken.token}" bind:currentTrack={currentTrack}
+                classes="w-full"/>
         <nav class="isolate flex lg:hidden w-full divide-x-2 divide-gray-200 dark:divide-zinc-700 rounded-xl overflow-hidden shadow-xl mt-1 sm:mt-2 border-2 border-zinc-200 dark:border-zinc-700"
              aria-label="Tabs">
             <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->

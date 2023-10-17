@@ -32,7 +32,7 @@
         })
     })
 </script>
-<div class="flex w-full max-h-[calc(100dvh-486px)] sm:max-h-[calc(100dvh-388px)] lg:max-h-[calc(100dvh-228px)] {classes}">
+<div class="flex w-full max-h-[calc(100dvh-368px)] sm:max-h-[calc(100dvh-388px)] lg:max-h-[calc(100dvh-228px)] {classes}">
     {#if !$artistsRankingStore?.total || $artistsRankingStore?.total === 0}
         <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
             {#each Array(10) as _}

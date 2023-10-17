@@ -3,9 +3,10 @@ import { json } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const bodyParams = await request.json();
+	console.log('fetching likes', bodyParams.trackIds, bodyParams.trackIds.join('%2'));
 	try {
 		const result = await fetch(
-			'https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=50&offset=0',
+			`https://api.spotify.com/v1/me/tracks/contains?ids=${bodyParams.trackIds.join('%2')}`,
 			{
 				method: 'GET',
 				headers: {
@@ -14,10 +15,11 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		);
 		const data = await result.json();
-		console.log('fetching artists', data, bodyParams.accessToken);
+		console.log('fetching liked tracks', data, bodyParams.accessToken);
 		// return await result.json();
 		return json(data);
 	} catch (error) {
+		console.log('fucking error', error);
 		return json(error);
 	}
 };

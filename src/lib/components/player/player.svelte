@@ -1,15 +1,17 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {slide, fly} from 'svelte/transition'
+    import {slide} from 'svelte/transition'
     import type {Window} from "@types/spotify-web-playback-sdk";
     import type {SpotifyTrack} from "$lib/types/spotify.js";
-    import {Play, Pause, Loader2, SkipBack, SkipForward} from "lucide-svelte";
+    import {Play, Pause, Loader2, SkipBack, SkipForward, Shuffle, Heart} from "lucide-svelte";
     import {writable} from "svelte/store";
     import {Progress} from "./progress/index";
+    import {Sound} from "$components/player/sound/index";
+    import {UserCard} from "$components/user_card/index.js";
 
     export let accessToken: string;
     let deviceId: string | null = null;
-    export let currentTrack: SpotifyTrack | null = null;
+    export let currentTrack: CustomEvent<SpotifyTrack | null>;
     export let classes: string = '';
     let player = writable<Window.Spotify.Player | null>(null);
     let playerState = writable<Window.Spotify.PlaybackState | null>(null)
@@ -47,24 +49,46 @@
                 deviceId: deviceId
             })
         }).then(res => res.json()).then(() => {
-            console.log('sucess transfering the music')
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+    let likedTracks = writable<{
+        [key: string]: boolean
+    }>({})
+    const fetchLikedStatus = async (trackId: string) => {
+        return fetch('/api/spotify/likes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                trackIds: [trackId]
+            })
+        }).then(res => res.json()).then((res) => {
+            likedTracks.set({
+                ...$likedTracks,
+                [trackId]: res?.[0] ?? false
+            })
+            console.log('track is liked', $likedTracks)
         }).catch(err => {
             console.error(err)
         })
     }
     $: {
-        if (currentTrack && $player) {
+        if (currentTrack && currentTrack.detail && $player) {
+            if (!$likedTracks?.[currentTrack?.detail.id]) {
+                fetchLikedStatus(currentTrack.detail.id)
+            }
             $player.getCurrentState().then(async (state) => {
                 if (!state) {
                     console.error('User is not playing music through the Web Playback SDK');
-                    console.log('attempting to make device active')
                     await makeDeviceActive();
                 }
-                console.log('sending this track to the queue', currentTrack)
                 const success = await digestNextSong(currentTrack.detail.uri)
-                console.log('success', success)
                 if (success) {
-                    console.log('sucessfully added song to queue')
+                    currentTrack = null;
                     await skipSong('next')
                 } else {
                     console.error('failed to add song to queue')
@@ -74,7 +98,6 @@
     }
 
     onMount(() => {
-        console.log('mounted')
         const script = document.createElement("script");
         script.src = "https://sdk.scdn.co/spotify-player.js";
         script.async = true;
@@ -94,6 +117,10 @@
             $player.addListener('ready', ({device_id}) => {
                 console.log('Ready with Device ID', device_id);
                 deviceId = device_id;
+                loadingPlayer.set(true)
+                makeDeviceActive().then(() => {
+                    loadingPlayer.set(false)
+                });
             });
             $player.addListener('not_ready', ({device_id}) => {
                 console.log('Device ID has gone offline', device_id);
@@ -114,21 +141,23 @@
                 }
             });
             $player.addListener('player_state_changed',
-                ({
-                     position,
-                     duration,
-                     track_window: {current_track},
-                     paused
-                 }) => {
-                    console.log('something moved')
-                    console.log('Currently Playing', current_track);
-                    console.log('Position in Song', position);
-                    console.log('Duration of Song', duration);
+                async ({
+                           position,
+                           duration,
+                           track_window: {current_track},
+                           paused,
+                           shuffle
+                       }) => {
+                    if (current_track && !(current_track.id in $likedTracks) && $likedTracks[current_track.id] !== false) {
+                        console.log('hehehehe', $likedTracks, current_track, $likedTracks?.[current_track?.id])
+                        await fetchLikedStatus(current_track.id)
+                    }
                     playerState.set({
                         ...playerState,
                         position,
                         duration,
                         paused,
+                        shuffle,
                         track_window: {current_track}
                     })
                 });
@@ -161,75 +190,130 @@
             });
         }
     }
-    const updatePlayerState = async () => {
+    const updatePlayerState = async (newParams?: any) => {
         $player.getCurrentState().then(async (state) => {
-            playerState.set(state)
+            playerState.set({...state, ...newParams})
         });
     }
-    const seek = async (event: number) => {
-        await $player.seek(event.detail.newPosition)
+    const seek = async (event: CustomEvent<number>) => {
+        await $player.seek(event.detail)
         await updatePlayerState();
+    }
+    let loadingShuffle = writable<boolean>(false)
+    const shuffle = async (shuffle: boolean) => {
+        loadingShuffle.set(true)
+        await fetch('/api/spotify/playback/shuffle', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                shuffle: shuffle
+            })
+        }).then(res => res.json()).then(() => {
+            console.log('sucess shuffling the player')
+        }).catch(err => {
+            console.error(err)
+        })
+        await updatePlayerState({
+            shuffle: shuffle
+        });
+        loadingShuffle.set(false)
+    }
+    const setVolume = async (event: number) => {
+        await $player.setVolume(event.detail.volume)
+        await updatePlayerState();
+    }
+    let volume = writable<number>(0.5)
+    $: {
+        if ($player) {
+            $player.getVolume().then((volume) => {
+                console.log('setting volume', volume)
+            });
+        }
     }
 </script>
 
-<div class="flex lg:flex-row flex-col w-fit lg:justify-between items-center px-2 sm:px-4 lg:px-2 py-2 lg:py-0 h-[212px] lg:h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
+<div
+        id="portal"
+        class="flex lg:flex-row flex-col w-fit lg:justify-between items-center px-2 sm:px-4 lg:px-2 py-2 lg:py-0 h-[212px] lg:h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
     {#if $playerState?.track_window?.current_track && !$loadingPlayer}
-        <div class="flex items-center mr-0 lg:mr-4 w-full lg:w-[360px] lg:min-w-[360px] grow">
-            <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
-                 alt="Album cover"
-                 class="w-12 h-12 lg:w-10 lg:h-10 rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
-            <div class="flex flex-col ml-2">
+        <div class="flex items-center justify-between mr-0 lg:mr-4 w-full lg:w-[360px] lg:min-w-[360px] grow"
+             in:slide="{{axis: 'x', duration: 400, delay: 150}}"
+             out:slide="{{axis: 'x', duration: 400}}">
+            <div class="flex items-center">
+                <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
+                     alt="Album cover"
+                     class="w-12 h-12 lg:w-10 lg:h-10 rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
+                <div class="flex flex-col ml-2">
                 <span class="dark:text-white font-semibold tracking-wide text-base lg:text-lg">
                     {$playerState?.track_window?.current_track?.name}
                 </span>
-                <div class="flex items-center flex-wrap">
-                    {#each $playerState?.track_window?.current_track?.artists as artist, index}
-                        <a href={artist.external_urls?.spotify ?? artist.href}
-                           target="_blank"
-                           title="Open Spotify profile"
-                           class="group whitespace-break-spaces inline-flex items-center cursor-pointer tracking-tight text-sm sm:text-base text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
-                            {artist.name}
-                            {#if index !== $playerState?.track_window?.current_track?.artists.length - 1}
-                                <span class="mr-0.5">,</span>
-                            {/if}
-                        </a>
-                    {/each}
+                    <div class="flex items-center flex-wrap">
+                        {#each $playerState?.track_window?.current_track?.artists as artist, index}
+                            <a href={artist.external_urls?.spotify ?? artist.href}
+                               target="_blank"
+                               title="Open Spotify artist"
+                               class="group whitespace-break-spaces inline-flex items-center cursor-pointer tracking-tight text-sm sm:text-base text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
+                                {artist.name}
+                                {#if index !== $playerState?.track_window?.current_track?.artists.length - 1}
+                                    <span class="mr-0.5">,</span>
+                                {/if}
+                            </a>
+                        {/each}
+                    </div>
                 </div>
             </div>
+            <Heart class="{$likedTracks?.[$playerState?.track_window.current_track.id] ? 'h-3.5 w-3.5 fill-indigo-500 dark:fill-indigo-300 text-white dark:text-zinc-900' : 'h-3 w-3 text-zinc-950 dark:text-zinc-700'}"/>
         </div>
     {:else}
-        <div class="flex w-full h-14 py-2 animate-pulse-3 items-center">
-            <span class="w-12 h-12 sm:w-10 sm:h-10 rounded-xl bg-zinc-800"/>
+        <div class="flex w-full h-12 py-1 animate-pulse-3 items-center"
+             out:slide="{{axis: 'x', duration: 100}}">
+            <span class="w-12 h-12 sm:w-10 sm:h-10 rounded-xl bg-zinc-300 dark:bg-zinc-800"/>
             <div class="flex flex-col ml-2 grow">
-                <span class="bg-zinc-800 h-2 rounded-full w-2/3"/>
-                <span class="bg-zinc-800 mt-2 h-1 rounded-full w-1/2"/>
+                <span class="bg-zinc-300 dark:bg-zinc-800 h-2 rounded-full w-2/3"/>
+                <span class="bg-zinc-300 dark:bg-zinc-800 mt-2 h-1 rounded-full w-1/2"/>
             </div>
         </div>
     {/if}
-    <div class="flex flex-col-reverse lg:flex-col w-full lg:w-full">
-        <div class="flex w-full items-center justify-center -mt-3 lg:mt-0">
-            <button on:click={() => skipSong('previous')} class="mr-2 group cursor-pointer">
-                <SkipBack
-                        class="w-3 h-3 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"/>
-            </button>
-            <button on:click={play}
-                    class="text-white mr-2 cursor-pointer rounded-full group p-0.5 flex items-center justify-center">
-                {#if !$playerState || $playerState?.paused}
-                    {#if $loadingPlayer}
-                        <Loader2 class="w-3 h-3 sm:w-4 sm:h-4 text-zinc-950 dark:text-white stroke-[2px] animate-spin"/>
+    <div class="flex flex-col-reverse lg:flex-col w-full lg:w-full transition-width ease-linear duration-300">
+        <div class="flex w-full items-center justify-between">
+            <UserCard bind:accessToken="{accessToken}"/>
+            <div class="flex w-full items-center justify-center lg:mt-0">
+                <button on:click={() => shuffle(!$playerState?.shuffle)}
+                        class="mr-2 sm:mr-4 p-0.5 group cursor-pointer">
+                    <Shuffle
+                            class="w-1.5 h-1.5 sm:w-2 sm:h-2 group-hover:text-green-600 dark:group-hover:text-green-300 {
+                            $playerState?.shuffle ? 'text-green-600 dark:text-green-300' : 'text-zinc-950 dark:text-white'
+                        } {$loadingShuffle && 'animate-pulse-3 !text-green-300'}"/>
+                </button>
+                <button on:click={() => skipSong('previous')} class=" group cursor-pointer">
+                    <SkipBack
+                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"/>
+                </button>
+                <button on:click={play}
+                        class="text-white mx-1.5 sm:mx-2 cursor-pointer rounded-full group p-0.5 flex items-center justify-center">
+                    {#if !$playerState || $playerState?.paused}
+                        {#if $loadingPlayer}
+                            <Loader2
+                                    class="w-3 h-3 sm:w-4 sm:h-4 text-zinc-950 dark:text-white stroke-[2px] animate-spin"/>
+                        {:else}
+                            <Play class="h-3 w-3 sm:w-4 sm:h-4 pl-0.5 fill-zinc-950 text-zinc-950 dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"/>
+                        {/if}
                     {:else}
-                        <Play class="w-4 h-4 pl-0.5 fill-zinc-950 text-zinc-950 dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"/>
+                        <Pause class="h-3 w-3 sm:w-4 sm:h-4 stroke-0 fill-zinc-950 text-white dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400"/>
                     {/if}
-                {:else}
-                    <Pause class="w-4 h-4 stroke-0 fill-zinc-950 text-white dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400"/>
-                {/if}
-            </button>
-            <button on:click={() => skipSong('next')} class="group cursor-pointer">
-                <SkipForward
-                        class="w-3 h-3 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
-                />
-            </button>
+                </button>
+                <button on:click={() => skipSong('next')} class="group cursor-pointer">
+                    <SkipForward
+                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
+                    />
+                </button>
+                <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-3 sm:ml-3.5"/>
+            </div>
+            <span class="h-4 w-4 rounded-lg bg-red-300"/>
         </div>
-        <Progress {playerState} on:seek={seek} classes="mb-2 mt-1 lg:mb-0 lg:mt-0"/>
+        <Progress {playerState} on:seek={seek} classes="mb-1 mt-1 lg:mb-0"/>
     </div>
 </div>

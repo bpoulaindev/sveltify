@@ -55,7 +55,7 @@ export const useSpotifyLogin = () => {
 			response_type: 'code',
 			client_id: clientId,
 			scope:
-				'user-read-email user-read-private user-top-read streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
+				'user-read-email user-read-private user-top-read streaming user-library-read user-read-playback-state user-modify-playback-state user-read-currently-playing',
 			redirect_uri: redirectUri,
 			state: state,
 			code_challenge_method: 'S256',

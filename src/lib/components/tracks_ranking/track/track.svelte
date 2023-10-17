@@ -39,13 +39,13 @@
             alt="profile"
             class="rounded-lg w-9 h-9 min-w-9 min-h-9 sm:w-10 sm:h-10 sm:min-h-10 sm:min-w-10 object-cover bg-center border-2 border-zinc-200 dark:border-zinc-700"
     />
-    <div class="flex flex-col ml-2 grow">
+    <div class="flex flex-col ml-2 grow justify-between">
         <span
-                class="group flex items-center w-auto text-sm sm:text-base sm:w-fit font-semibold tracking-wide dark:text-white ease-in duration-100"
+                class="group -mt-0.25 flex items-center w-auto text-sm sm:text-base sm:w-fit font-semibold tracking-wide dark:text-white ease-in duration-100"
         >
             {track.name}
         </span>
-        <div class="flex flex-wrap items-center mt-0.5 sm:mt-1">
+        <div class="flex flex-wrap items-center mt-0.5">
             {#if track.artists.length > 0}
                 <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                     {track.artists[0].name}

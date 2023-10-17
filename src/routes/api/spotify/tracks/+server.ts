@@ -18,7 +18,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		// return await result.json();
 		return json(data);
 	} catch (error) {
-		console.log('omg jpp', error);
 		return json(error);
 	}
 };

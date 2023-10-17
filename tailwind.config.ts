@@ -16,6 +16,9 @@ export default {
 				xs: '400px',
 				over500: '500px'
 			},
+			transitionProperty: {
+				width: 'width'
+			},
 			animation: {
 				'spin-1': 'spin 1s linear infinite',
 				'spin-2': 'spin 1.5s linear infinite',
