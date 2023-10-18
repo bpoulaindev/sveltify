@@ -43,25 +43,18 @@
 </script>
 
 {#if !$userProfileStore?.display_name}
-    <div class="{classes} flex animate-pulse items-center h-14 w-full sm:w-[400px] rounded-2xl p-2 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700">
-        <span class="rounded-lg w-10 h-10 min-h-10 min-w-10 bg-gray-200 dark:bg-zinc-800"/>
-        <div class="flex flex-col ml-2 grow">
-            <span class="grow h-1 bg-zinc-800 rounded-full"/>
-            <span class="grow mt-2 h-1 bg-zinc-800 rounded-full"/>
-            <span class="grow mt-2 h-1 bg-zinc-800 rounded-full"/>
-        </div>
-    </div>
+    <span class="{classes} flex h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[32px] sm:h-4 sm:w-4 sm:min-h-4 rounded-md animate-pulse bg-zinc-300 dark:bg-zinc-700"/>
 {:else}
     <button
             type="button"
-            class="{classes} flex h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:h-4 sm:w-4 sm:min-h-4 sm:min-w-[32px] items-center justify-center rounded-lg bg-neutral-100"
+            class="{classes} flex h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:h-4 sm:w-4 sm:min-h-4 sm:min-w-[32px] overflow-hidden items-center justify-center rounded-md bg-zinc-100"
             use:melt={$trigger}
             aria-label="Open Spotify profile card"
     >
         <img
                 src="{$userProfileStore.images[0].url}"
                 alt="Avatar"
-                class="h-full w-full rounded-[inherit] object-cover bg-center"
+                class="h-full w-full object-cover bg-center"
         />
         <span class="sr-only">Open Popover</span>
     </button>

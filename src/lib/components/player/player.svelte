@@ -3,11 +3,12 @@
     import {slide} from 'svelte/transition'
     import type {Window} from "@types/spotify-web-playback-sdk";
     import type {SpotifyTrack} from "$lib/types/spotify.js";
-    import {Play, Pause, Loader2, SkipBack, SkipForward, Shuffle, Heart} from "lucide-svelte";
+    import {Play, Pause, Loader2, SkipBack, SkipForward, Shuffle, Heart, Fullscreen, Minimize} from "lucide-svelte";
     import {writable} from "svelte/store";
     import {Progress} from "./progress/index";
     import {Sound} from "$components/player/sound/index";
     import {UserCard} from "$components/user_card/index.js";
+    import {fullScreenStore} from "$lib/stores";
 
     export let accessToken: string;
     let deviceId: string | null = null;
@@ -149,7 +150,6 @@
                            shuffle
                        }) => {
                     if (current_track && !(current_track.id in $likedTracks) && $likedTracks[current_track.id] !== false) {
-                        console.log('hehehehe', $likedTracks, current_track, $likedTracks?.[current_track?.id])
                         await fetchLikedStatus(current_track.id)
                     }
                     playerState.set({
@@ -237,25 +237,25 @@
 
 <div
         id="portal"
-        class="flex lg:flex-row flex-col w-fit lg:justify-between items-center px-2 sm:px-4 lg:px-2 py-2 lg:py-0 h-[212px] lg:h-14 rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 ease-linear {classes}">
+        class="flex w-fit items-center {$fullScreenStore ? '!min-h-[calc(100dvh-96px)] !h-[calc(100dvh-96px)] flex-col p-4 items-center justify-between dark:bg-zinc-950 bg-zinc-100' : 'h-[212px] px-2 sm:px-4 lg:px-2 py-2 lg:py-0 lg:flex-row flex-col lg:justify-between shadow-xl bg-white dark:bg-zinc-800'} transition-height duration-300 ease-linear lg:h-14 rounded-2xl {classes}">
     {#if $playerState?.track_window?.current_track && !$loadingPlayer}
-        <div class="flex items-center justify-between mr-0 w-full lg:w-[500px] lg:min-w-[500px]"
+        <div class="flex items-center mr-0 w-full {$fullScreenStore ? 'justify-center' : 'lg:w-[500px] lg:min-w-[500px] justify-between'}"
              in:slide="{{axis: 'x', duration: 400, delay: 150}}"
              out:slide="{{axis: 'x', duration: 400}}">
-            <div class="flex items-center">
+            <div class="flex items-center {$fullScreenStore ? 'flex-col h-full' : 'w-full'}">
                 <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
                      alt="Album cover"
-                     class="w-12 h-12 lg:w-10 lg:h-10 rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
-                <div class="flex flex-col ml-2">
-                <span class="dark:text-white font-semibold tracking-wide text-base lg:text-lg">
-                    {$playerState?.track_window?.current_track?.name}
-                </span>
-                    <div class="flex items-center flex-wrap">
+                     class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60 lg:w-80 lg:h-80' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
+                <div class="flex flex-col {$fullScreenStore ? 'items-center mt-4' : 'ml-2'}">
+                    <span class="dark:text-white font-semibold tracking-wide {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}">
+                        {$playerState?.track_window?.current_track?.name}
+                    </span>
+                    <div class="flex items-center flex-wrap {$fullScreenStore && 'mt-2'}">
                         {#each $playerState?.track_window?.current_track?.artists as artist, index}
                             <a href={artist.external_urls?.spotify ?? artist.href}
                                target="_blank"
                                title="Open Spotify artist"
-                               class="group whitespace-break-spaces inline-flex items-center cursor-pointer tracking-tight text-sm sm:text-base text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
+                               class="group whitespace-break-spaces inline-flex items-center cursor-pointer tracking-tight {$fullScreenStore ? 'text-base sm:text-lg' : 'text-sm sm:text-base'} text-zinc-400 dark:text-zinc-500 hover:text-indigo-500 dark:hover:text-indigo-300 ease-in duration-100">
                                 {artist.name}
                                 {#if index !== $playerState?.track_window?.current_track?.artists.length - 1}
                                     <span class="mr-0.5">,</span>
@@ -265,7 +265,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex">
+            <div class="flex {$fullScreenStore && 'hidden'}">
                 <div class="flex flex-col items-center justify-center">
                     <Heart class="{$likedTracks?.[$playerState?.track_window.current_track.id] ? 'h-3.5 w-3.5 fill-green-500 dark:fill-green-300 text-white dark:text-zinc-900' : 'h-3 w-3 text-zinc-950 dark:text-zinc-700'}"/>
                 </div>
@@ -275,10 +275,10 @@
     {:else}
         <div class="flex w-full h-12 py-1 animate-pulse-3 items-center"
              out:slide="{{axis: 'x', duration: 100}}">
-            <span class="w-12 h-12 sm:w-10 sm:h-10 rounded-xl bg-zinc-300 dark:bg-zinc-800"/>
+            <span class="w-12 h-12 sm:w-10 sm:h-10 rounded-xl bg-zinc-300 dark:bg-zinc-600"/>
             <div class="flex flex-col ml-2 grow">
-                <span class="bg-zinc-300 dark:bg-zinc-800 h-2 rounded-full w-2/3"/>
-                <span class="bg-zinc-300 dark:bg-zinc-800 mt-2 h-1 rounded-full w-1/2"/>
+                <span class="bg-zinc-300 dark:bg-zinc-600 h-2 rounded-full w-2/3"/>
+                <span class="bg-zinc-300 dark:bg-zinc-600 mt-2 h-1 rounded-full w-1/2"/>
             </div>
         </div>
     {/if}
@@ -317,8 +317,14 @@
                 </button>
                 <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-3 sm:ml-3.5"/>
             </div>
-            <span class="h-4 w-4 rounded-lg bg-red-300"/>
+            <button class="group cursor-pointer" on:click={() => fullScreenStore.set(!$fullScreenStore)}>
+                {#if $fullScreenStore}
+                    <Minimize class="h-3.5 w-3.5 sm:h-4 sm:w-4 dark:text-white stroke-1 group-hover:text-zinc-300"/>
+                {:else}
+                    <Fullscreen class="h-3.5 w-3.5 sm:h-4 sm:w-4 dark:text-white stroke-1 group-hover:text-zinc-300"/>
+                {/if}
+            </button>
         </div>
-        <Progress {playerState} on:seek={seek} classes="mb-1 mt-1 lg:mb-0"/>
+        <Progress {playerState} on:seek={seek} classes="mb-1 mt-2 lg:mt-1 lg:mb-0"/>
     </div>
 </div>

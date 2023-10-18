@@ -1,9 +1,8 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {tokenStore} from "$lib/stores";
+    import {tokenStore, fullScreenStore} from "$lib/stores";
     import type {SpotifyTrack, Tokens} from "$lib/types/spotify";
     import {LayeredLoader} from "$components/loader/index";
-    import {UserCard} from "$components/user_card/index"
     import dayjs from "dayjs";
     import {
         initializeTokens,
@@ -69,33 +68,35 @@
     {:else}
         <Player bind:accessToken="{$tokenStore.accessToken.token}" bind:currentTrack={currentTrack}
                 classes="w-full"/>
-        <nav class="isolate flex lg:hidden w-full divide-x-2 divide-gray-200 dark:divide-zinc-700 rounded-xl overflow-hidden shadow-xl mt-1 sm:mt-2 border-2 border-zinc-200 dark:border-zinc-700"
-             aria-label="Tabs">
-            <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
-            <button
-                    on:click={() => $activeTab = 'artists'}
-                    class="{$activeTab === 'artists' ? 'bg-zinc-100 dark:bg-zinc-700' : 'bg-white dark:bg-zinc-900' } dark:text-white rounded-l-lg group relative min-w-0 flex-1 overflow-hidden py-1 px-1 text-center text-sm sm:text-base font-medium focus:z-10"
-                    aria-current="page">
-                <span>Top artists</span>
-            </button>
-            <button
-                    on:click={() => $activeTab = 'tracks'}
-                    class="{$activeTab === 'tracks' ? 'bg-zinc-100 dark:bg-zinc-700' : 'bg-white dark:bg-zinc-900' } dark:text-white rounded-r-lg group relative min-w-0 flex-1 overflow-hidden py-1 px-1 text-center text-sm sm:text-base font-medium focus:z-10">
-                <span>Top tracks</span>
-            </button>
-        </nav>
-        <div class="flex w-full mt-1 sm:mt-2 items-center flex-col lg:flex-row">
-            {#if (screenWidth < 1024 && $activeTab === 'artists') || screenWidth >= 1024}
-                <ArtistsRanking bind:accessToken="{$tokenStore.accessToken.token}"
-                                classes="w-full lg:mt-0 lg:w-1/2 lg:mr-1"/>
-            {/if}
-            {#if (screenWidth < 1024 && $activeTab === 'tracks') || screenWidth >= 1024}
-                <TracksRanking
-                        bind:accessToken="{$tokenStore.accessToken.token}"
-                        classes="w-full lg:mt-0 lg:w-1/2 lg:ml-1"
-                        on:play={changeCurrentTrack}
-                />
-            {/if}
-        </div>
+        {#if !$fullScreenStore}
+            <nav class="isolate flex lg:hidden w-full divide-x-2 divide-gray-200 dark:divide-zinc-700 rounded-xl overflow-hidden shadow-xl mt-1 sm:mt-2 border-2 border-zinc-200 dark:border-zinc-700"
+                 aria-label="Tabs">
+                <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                <button
+                        on:click={() => $activeTab = 'artists'}
+                        class="{$activeTab === 'artists' ? 'bg-zinc-100 dark:bg-zinc-700' : 'bg-white dark:bg-zinc-900' } dark:text-white rounded-l-lg group relative min-w-0 flex-1 overflow-hidden py-1 px-1 text-center text-sm sm:text-base font-medium focus:z-10"
+                        aria-current="page">
+                    <span>Top artists</span>
+                </button>
+                <button
+                        on:click={() => $activeTab = 'tracks'}
+                        class="{$activeTab === 'tracks' ? 'bg-zinc-100 dark:bg-zinc-700' : 'bg-white dark:bg-zinc-900' } dark:text-white rounded-r-lg group relative min-w-0 flex-1 overflow-hidden py-1 px-1 text-center text-sm sm:text-base font-medium focus:z-10">
+                    <span>Top tracks</span>
+                </button>
+            </nav>
+            <div class="flex w-full mt-1 sm:mt-2 items-center flex-col lg:flex-row">
+                {#if (screenWidth < 1024 && $activeTab === 'artists') || screenWidth >= 1024}
+                    <ArtistsRanking bind:accessToken="{$tokenStore.accessToken.token}"
+                                    classes="w-full lg:mt-0 lg:w-1/2 lg:mr-1"/>
+                {/if}
+                {#if (screenWidth < 1024 && $activeTab === 'tracks') || screenWidth >= 1024}
+                    <TracksRanking
+                            bind:accessToken="{$tokenStore.accessToken.token}"
+                            classes="w-full lg:mt-0 lg:w-1/2 lg:ml-1"
+                            on:play={changeCurrentTrack}
+                    />
+                {/if}
+            </div>
+        {/if}
     {/if}
 </div>

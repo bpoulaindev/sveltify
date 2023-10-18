@@ -6,7 +6,7 @@
     import {darkMode} from "$src/hooks.client.js";
     import {UserCircle2} from "lucide-svelte";
     import {onMount} from "svelte";
-    import {tokenStore} from "$lib/stores.ts";
+    import {tokenStore, fullScreenStore} from "$lib/stores.ts";
 
     onMount(() => {
         // initializeTokens(tokens);
@@ -23,12 +23,14 @@
         }
     }
 </script>
-<nav class="flex rounded-2xl bg-white border-2 border-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 max-w-auto px-2 py-1 m-2">
+<nav class="flex rounded-2xl max-w-auto px-2 py-1 m-2 {$fullScreenStore ? 'bg-transparent' : 'bg-white shadow-xl dark:bg-zinc-800'}">
     <div class="flex w-full items-center">
-        <a class="flex items-center grow" href="/">
-            <img src={$darkMode ? logo : lightLogo} alt="logo" class="w-3.5 h-3.5">
-            <span class="text-2xl font-medium text-green-600 dark:text-white -ml-0.5 font-supreme">veltify</span>
-        </a>
+        <div class="flex grow items-center">
+            <a class="flex items-center w-fit" href="/">
+                <img src={$darkMode ? logo : lightLogo} alt="logo" class="w-3.5 h-3.5">
+                <span class="text-2xl tracking-wider font-bold text-zinc-800 dark:text-white -ml-0.5 font-supreme">veltify</span>
+            </a>
+        </div>
         <button on:click={handleLogin}
                 type="button"
                 class="w-fit h-fit rounded-full p-0.5 mr-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">

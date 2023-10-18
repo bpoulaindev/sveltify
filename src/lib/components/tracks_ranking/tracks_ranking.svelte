@@ -36,7 +36,7 @@
 </script>
 <div class="flex w-full max-h-[calc(100dvh-368px)] sm:max-h-[calc(100dvh-388px)] lg:max-h-[calc(100dvh-228px)] {classes}">
     {#if !$tracksRankingStore?.total || $tracksRankingStore?.total === 0}
-        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-800 shadow-xl">
             {#each Array(5) as _}
                 <div class="animate-pulse-2 w-full flex h-12 min-h-[80px] sm:min-h-[96px] my-1">
                     <div class="flex w-full h-full bg-zinc-300 dark:bg-zinc-700 rounded-xl"/>
@@ -44,7 +44,7 @@
             {/each}
         </div>
     {:else}
-        <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-800 shadow-xl">
             {#each $tracksRankingStore.items as track, index}
                 <Track {index} {track} on:play={changeCurrentTrack}/>
             {/each}

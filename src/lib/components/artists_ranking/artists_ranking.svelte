@@ -34,7 +34,7 @@
 </script>
 <div class="flex w-full max-h-[calc(100dvh-368px)] sm:max-h-[calc(100dvh-388px)] lg:max-h-[calc(100dvh-228px)] {classes}">
     {#if !$artistsRankingStore?.total || $artistsRankingStore?.total === 0}
-        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col animate-pulse-3 items-center h-auto w-full overflow-y-scroll rounded-2xl px-2 py-0.5 sm:py-1 bg-white dark:bg-zinc-800 shadow-xl">
             {#each Array(10) as _}
                 <div class="animate-pulse-2 w-full flex h-12 min-h-[80px] sm:min-h-[96px] my-1">
                     <div class="flex w-full h-full bg-zinc-300 dark:bg-zinc-700 rounded-xl"/>
@@ -42,7 +42,7 @@
             {/each}
         </div>
     {:else}
-        <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 shadow-xl">
+        <div class="flex flex-col items-center px-1 sm:px-2 py-0.5 sm:py-1 w-full h-auto overflow-scroll rounded-2xl bg-white dark:bg-zinc-800 shadow-xl">
             {#each $artistsRankingStore.items as artist, index}
                 <div class="flex items-center justify-start w-full my-0.5 sm:my-1 py-0.5 sm:py-1 px-1 sm:px-2 rounded-xl cursor-pointer group hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors ease-in-out duration-100">
                     <span class="text-lg sm:text-3xl dark:text-white w-4 sm:w-8 min-w-4 sm:min-w-8 mr-1">

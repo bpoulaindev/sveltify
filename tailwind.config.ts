@@ -20,7 +20,8 @@ export default {
 				over500: '500px'
 			},
 			transitionProperty: {
-				width: 'width'
+				width: 'width',
+				height: 'height'
 			},
 			animation: {
 				'spin-1': 'spin 1s linear infinite',
@@ -67,6 +68,7 @@ export default {
 			32: '256px',
 			36: '288px',
 			40: '320px',
+			60: '480px',
 			80: '640px',
 			120: '960px'
 		},

@@ -15,3 +15,5 @@ export const artistsRankingStore = writable<SpotifyApiResponse<SpotifyArtist> | 
 export const tracksRankingStore = writable<SpotifyApiResponse<SpotifyTrack> | null>(null);
 
 export const tokenStore = writable<Tokens | null>(null);
+
+export const fullScreenStore = writable<boolean>(true);
