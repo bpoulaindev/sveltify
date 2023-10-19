@@ -167,6 +167,11 @@
     const play = async () => {
         if (!$playerState) {
             console.error('User is not playing music through the Web Playback SDK');
+            $player.connect().then(async (success) => {
+                if (success) {
+                    console.log('The Web Playback SDK successfully connected to Spotify!');
+                }
+            });
             loadingPlayer.set(true)
             await makeDeviceActive();
             loadingPlayer.set(false)
