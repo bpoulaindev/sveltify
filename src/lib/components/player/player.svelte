@@ -111,6 +111,7 @@
                 },
                 volume: 0.5
             });
+            console.log('mounted player initialized')
             if (!$player) {
                 console.error('Player is not defined');
                 return;

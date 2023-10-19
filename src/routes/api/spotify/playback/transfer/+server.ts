@@ -29,6 +29,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		});
 	} catch (error) {
 		console.log('error while making device active', error);
-		return json(error);
+		return json({ error });
 	}
 };
