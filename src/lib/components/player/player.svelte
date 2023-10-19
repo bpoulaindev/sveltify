@@ -72,7 +72,7 @@
                 ...$likedTracks,
                 [trackId]: res?.[0] ?? false
             })
-            console.log('track is liked', $likedTracks)
+            // console.log('track is liked', $likedTracks)
         }).catch(err => {
             console.error(err)
         })
@@ -109,7 +109,8 @@
                 getOAuthToken: cb => {
                     cb(accessToken);
                 },
-                volume: 0.5
+                volume: 0.5,
+                enableMediaSession: true
             });
             console.log('mounted player initialized')
             if (!$player) {
@@ -128,13 +129,16 @@
                 console.log('Device ID has gone offline', device_id);
             });
             $player.addListener('initialization_error', ({message}) => {
-                console.error(message);
+                console.error('Failed to initialize', message);
             });
             $player.addListener('authentication_error', ({message}) => {
-                console.error(message);
+                console.error('Failed to authenticate', message);
             });
             $player.addListener('account_error', ({message}) => {
-                console.error(message);
+                console.error('Account error', message);
+            });
+            $player.addListener('autoplay_failed', () => {
+                console.log('Autoplay is not allowed by the browser autoplay rules');
             });
             $player.setName("Sveltify")
             $player.connect().then(async (success) => {
@@ -246,7 +250,7 @@
             <div class="flex items-center {$fullScreenStore ? 'flex-col h-full' : 'w-full'}">
                 <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
                      alt="Album cover"
-                     class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60 lg:w-80 lg:h-80' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
+                     class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60 lg:w-70 lg:h-70' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
                 <div class="flex flex-col {$fullScreenStore ? 'items-center mt-4' : 'ml-2'}">
                     <span class="dark:text-white font-semibold tracking-wide {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}">
                         {$playerState?.track_window?.current_track?.name}
@@ -316,7 +320,7 @@
                             class="w-2.5 h-2.5 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
                     />
                 </button>
-                <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-3 sm:ml-3.5"/>
+                <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-3 sm:ml-4 p-0.5"/>
             </div>
             <button class="group cursor-pointer" on:click={() => fullScreenStore.set(!$fullScreenStore)}>
                 {#if $fullScreenStore}

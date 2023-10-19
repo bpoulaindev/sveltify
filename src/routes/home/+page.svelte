@@ -18,41 +18,45 @@
         currentTrack = track;
     }
     let screenWidth
+    const refreshToken = async () => {
+        console.log('refreshing access tokens')
+        const newAccessToken = await fetch('/api/spotify/refresh', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify({
+                refreshToken: $tokenStore?.refreshToken?.token || ''
+            })
+        }).then(res => res.json()).then((data) => {
+            const today = dayjs().valueOf();
+            const newTokens: Tokens = {
+                accessToken: {
+                    token: data.accessToken,
+                    timestamp: today
+                },
+                refreshToken: {
+                    token: data.refreshToken,
+                    timestamp: today
+                }
+            };
+            tokenStore.set(newTokens)
+            updateLocalStorageTokens(newTokens)
+            return data.accessToken;
+        })
+        $tokenStore && $tokenStore.accessToken && $tokenStore.accessToken.token && ($tokenStore.accessToken.token = newAccessToken);
+    }
+    $: {
+        if (dayjs().diff(dayjs($tokenStore?.refreshToken?.timestamp), 'minutes') > 59) {
+            refreshToken();
+        }
+    }
     onMount(async () => {
         // isMobile.set(window.innerWidth < 1024);
         // console.log('isMobile', isMobile)
         initializeTokens();
         if (!$tokenStore || !$tokenStore.accessToken || !$tokenStore.refreshToken) {
             window.location.href = '/login';
-        }
-        const tokens = $tokenStore;
-        console.log('difference', dayjs().diff(dayjs(tokens?.refreshToken?.timestamp), 'minutes'))
-        if (dayjs().diff(dayjs(tokens?.refreshToken?.timestamp), 'minutes') > 59) {
-            const newAccessToken = await fetch('/api/spotify/refresh', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: JSON.stringify({
-                    refreshToken: tokens?.refreshToken?.token || ''
-                })
-            }).then(res => res.json()).then((data) => {
-                const today = dayjs().valueOf();
-                const newTokens: Tokens = {
-                    accessToken: {
-                        token: data.accessToken,
-                        timestamp: today
-                    },
-                    refreshToken: {
-                        token: data.refreshToken,
-                        timestamp: today
-                    }
-                };
-                tokenStore.set(newTokens)
-                updateLocalStorageTokens(newTokens)
-                return data.accessToken;
-            })
-            tokens && tokens.accessToken && tokens.accessToken.token && (tokens.accessToken.token = newAccessToken);
         }
     })
     const activeTab = writable<'artists' | 'tracks'>('artists');
@@ -61,7 +65,7 @@
 <svelte:window bind:innerWidth={screenWidth}/>
 
 <div class="flex w-full h-full grow flex-col">
-    {#if !$tokenStore?.accessToken?.token || dayjs().diff(dayjs($tokenStore?.refreshToken?.timestamp), 'hour') > 1}
+    {#if !$tokenStore?.accessToken?.token || dayjs().diff(dayjs($tokenStore?.refreshToken?.timestamp), 'minutes') > 59}
         <div class="flex flex-col items-center">
             <LayeredLoader/>
         </div>
