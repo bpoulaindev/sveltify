@@ -242,7 +242,7 @@
 
 <div
         id="portal"
-        class="flex w-fit items-center {$fullScreenStore ? '!min-h-[calc(100dvh-96px)] !h-[calc(100dvh-96px)] flex-col p-4 items-center justify-between dark:bg-zinc-950 bg-zinc-100' : 'h-[212px] px-2 sm:px-4 lg:px-2 py-2 lg:py-0 lg:flex-row flex-col lg:justify-between shadow-xl bg-white dark:bg-zinc-800'} transition-height duration-300 ease-linear lg:h-14 rounded-2xl {classes}">
+        class="flex w-fit items-center {$fullScreenStore ? '!min-h-[calc(100dvh-96px)] !h-[calc(100dvh-96px)] flex-col p-0 sm:p-4 items-center justify-between dark:bg-zinc-950 bg-zinc-100' : 'h-[212px] px-2 sm:px-4 lg:px-2 py-2 lg:py-0 lg:flex-row flex-col lg:justify-between shadow-xl bg-white dark:bg-zinc-800 lg:h-14'} transition-height duration-300 ease-linear rounded-2xl {classes}">
     {#if $playerState?.track_window?.current_track && !$loadingPlayer}
         <div class="flex items-center mr-0 w-full {$fullScreenStore ? 'justify-center' : 'lg:w-[500px] lg:min-w-[500px] justify-between'}"
              in:slide="{{axis: 'x', duration: 400, delay: 150}}"
@@ -250,7 +250,7 @@
             <div class="flex items-center {$fullScreenStore ? 'flex-col h-full' : 'w-full'}">
                 <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
                      alt="Album cover"
-                     class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60 lg:w-70 lg:h-70' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
+                     class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
                 <div class="flex flex-col {$fullScreenStore ? 'items-center mt-4' : 'ml-2'}">
                     <span class="dark:text-white font-semibold tracking-wide {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}">
                         {$playerState?.track_window?.current_track?.name}
@@ -287,40 +287,40 @@
             </div>
         </div>
     {/if}
-    <div class="flex flex-col-reverse lg:flex-col w-full lg:w-full transition-width ease-linear duration-300">
+    <div class="flex flex-col-reverse {!$fullScreenStore && 'lg:flex-col'} w-full lg:w-full transition-width ease-linear duration-300">
         <div class="flex w-full items-center justify-between">
             <UserCard bind:accessToken="{accessToken}"/>
-            <div class="flex w-full items-center justify-center lg:mt-0">
+            <div class="flex w-full items-center justify-center lg:mt-0 {$fullScreenStore && '-mt-12'}">
                 <button on:click={() => shuffle(!$playerState?.shuffle)}
                         class="mr-2 sm:mr-4 p-0.5 group cursor-pointer">
                     <Shuffle
-                            class="w-1.5 h-1.5 sm:w-2 sm:h-2 group-hover:text-green-600 dark:group-hover:text-green-300 {
+                            class="{$fullScreenStore ? 'w-3 h-3 sm:w-5 sm:h-5' : 'w-1.5 h-1.5 sm:w-2 sm:h-2'} group-hover:text-green-600 dark:group-hover:text-green-300 {
                             $playerState?.shuffle ? 'text-green-600 dark:text-green-300' : 'text-zinc-950 dark:text-white'
                         } {$loadingShuffle && 'animate-pulse-3 !text-green-300'}"/>
                 </button>
                 <button on:click={() => skipSong('previous')} class=" group cursor-pointer">
                     <SkipBack
-                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"/>
+                            class="{$fullScreenStore ? 'h-4 w-4 sm:w-5 sm:h-5' : 'h-2.5 w-2.5 sm:w-3 sm:h-3'} dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"/>
                 </button>
                 <button on:click={play}
                         class="text-white mx-1.5 sm:mx-2 cursor-pointer rounded-full group p-0.5 flex items-center justify-center">
                     {#if !$playerState || $playerState?.paused}
                         {#if $loadingPlayer}
                             <Loader2
-                                    class="w-3 h-3 sm:w-4 sm:h-4 text-zinc-950 dark:text-white stroke-[2px] animate-spin"/>
+                                    class="{$fullScreenStore ? 'h-6 w-6 sm:w-8 sm:h-8' : 'h-3 w-3 sm:w-4 sm:h-4'} text-zinc-950 dark:text-white stroke-[2px] animate-spin"/>
                         {:else}
-                            <Play class="h-3 w-3 sm:w-4 sm:h-4 pl-0.5 fill-zinc-950 text-zinc-950 dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"/>
+                            <Play class="{$fullScreenStore ? 'h-6 w-6 sm:w-8 sm:h-8' : 'h-3 w-3 sm:w-4 sm:h-4'} pl-0.5 fill-zinc-950 text-zinc-950 dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"/>
                         {/if}
                     {:else}
-                        <Pause class="h-3 w-3 sm:w-4 sm:h-4 stroke-0 fill-zinc-950 text-white dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400"/>
+                        <Pause class="{$fullScreenStore ? 'h-6 w-6 sm:w-8 sm:h-8' : 'h-3 w-3 sm:w-4 sm:h-4'} stroke-0 fill-zinc-950 text-white dark:text-white dark:fill-white group-hover:fill-zinc-600 dark:group-hover:fill-zinc-400"/>
                     {/if}
                 </button>
                 <button on:click={() => skipSong('next')} class="group cursor-pointer">
                     <SkipForward
-                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
+                            class="{$fullScreenStore ? 'h-4 w-4 sm:w-5 sm:h-5' : 'h-2.5 w-2.5 sm:w-3 sm:h-3'} dark:text-white dark:fill-white stroke-[2px] group-hover:fill-zinc-950 dark:group-hover:fill-zinc-300 dark:group-hover:text-zinc-300"
                     />
                 </button>
-                <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-3 sm:ml-4 p-0.5"/>
+                <Sound volume="{$volume}" on:setVolume={setVolume} classes="ml-2 sm:ml-4 p-0.5"/>
             </div>
             <button class="group cursor-pointer" on:click={() => fullScreenStore.set(!$fullScreenStore)}>
                 {#if $fullScreenStore}
@@ -330,6 +330,7 @@
                 {/if}
             </button>
         </div>
-        <Progress {playerState} on:seek={seek} classes="mb-1 mt-2 lg:mt-1 lg:mb-0"/>
+        <Progress {playerState} on:seek={seek}
+                  classes="{$fullScreenStore ? '-mt-4 mb-12 lg:mb-8' : 'mb-1 mt-2 lg:mt-1 lg:mb-0'}"/>
     </div>
 </div>
