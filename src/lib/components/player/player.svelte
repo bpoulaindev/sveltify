@@ -165,7 +165,13 @@
         };
     });
     const play = async () => {
-        console.log('this is the current player state', $player)
+        console.log('this is the current player state', $player, $playerState)
+        $player.connect().then(async (success) => {
+            console.log('please', success)
+            if (success) {
+                console.log('The Web Playback SDK successfully connected to Spotify!');
+            }
+        });
         if (!$playerState) {
             console.error('User is not playing music through the Web Playback SDK');
             $player.connect().then(async (success) => {
