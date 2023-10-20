@@ -15,7 +15,7 @@
 >
     <!-- <div class="z-0 h-[350px] w-[500px] sm:h-[450px] sm:w-[750px] bg-red-200/60 dark:bg-red-200/30 rounded-full flex -rotate-45 absolute -left-[300px] sm:-left-[400px] -bottom-1/4 blur-3xl" /> -->
     <Navbar/>
-    <div class="flex flex-col w-full px-2 pb-2">
+    <div class="flex flex-col w-full px-1.5 xs:px-2 pb-1.5 xs:pb-2">
         <slot/>
     </div>
 </div>

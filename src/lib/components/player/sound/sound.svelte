@@ -48,13 +48,17 @@
         aria-label="Update dimensions"
 >
     {#if $newVolume[0] === 0}
-        <VolumeX class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
+        <VolumeX
+                class="{volumeClasses} {$fullScreenStore ? 'w-2.5 h-2.5 xs:w-3 xs:h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else if $newVolume[0] < 0.5}
-        <Volume1 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
+        <Volume1
+                class="{volumeClasses} {$fullScreenStore ? 'w-2.5 h-2.5 xs:w-3 xs:h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else if $newVolume[0] < 1}
-        <Volume2 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
+        <Volume2
+                class="{volumeClasses} {$fullScreenStore ? 'w-2.5 h-2.5 xs:w-3 xs:h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else}
-        <Volume2 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
+        <Volume2
+                class="{volumeClasses} {$fullScreenStore ? 'w-2.5 h-2.5 xs:w-3 xs:h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {/if}
     <span class="sr-only">Open Popover</span>
 </button>

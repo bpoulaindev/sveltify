@@ -23,7 +23,7 @@
         }
     }
 </script>
-<nav class="flex rounded-2xl max-w-auto {$fullScreenStore ? 'bg-transparent px-1 sm:px-2 py-1 m-1 sm:m-2' : 'bg-white shadow-xl dark:bg-zinc-800 px-2 py-1 m-2'}">
+<nav class="flex rounded-2xl max-w-auto {$fullScreenStore ? 'bg-transparent px-1 sm:px-2 py-1 m-1 sm:m-2' : 'bg-white shadow-xl dark:bg-zinc-800 px-1.5 xs:px-2 py-1 m-1.5 xs:m-2'}">
     <div class="flex w-full items-center">
         <div class="flex grow items-center">
             <a class="flex items-center w-fit" href="/">
