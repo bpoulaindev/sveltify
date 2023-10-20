@@ -251,11 +251,11 @@
                 <img src={$playerState?.track_window?.current_track?.album?.images[0]?.url}
                      alt="Album cover"
                      class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60' : 'w-12 h-12 lg:w-10 lg:h-10'} transition-all duration-100 ease-linear rounded-lg border-2 border-zinc-200 dark:border-zinc-700"/>
-                <div class="flex flex-col {$fullScreenStore ? 'items-center mt-1 xs:mt-4' : 'ml-2'}">
+                <div class="flex flex-col {$fullScreenStore ? 'items-center mt-1 sm:mt-4' : 'ml-2'}">
                     <span class="dark:text-white font-semibold tracking-wide {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}">
                         {$playerState?.track_window?.current_track?.name}
                     </span>
-                    <div class="flex items-center flex-wrap {$fullScreenStore && 'mt-1 xs:mt-2'}">
+                    <div class="flex items-center justify-center flex-wrap {$fullScreenStore && 'mt-1 sm:mt-2'}">
                         {#each $playerState?.track_window?.current_track?.artists as artist, index}
                             <a href={artist.external_urls?.spotify ?? artist.href}
                                target="_blank"
@@ -280,9 +280,9 @@
     {:else}
         <div class="flex items-center animate-pulse {$fullScreenStore ? 'flex-col h-full' : 'w-full'}">
             <span
-                    class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] flex sm:w-60 sm:h-60' : 'w-12 h-12 lg:w-10 lg:h-10'} bg-zinc-300 dark:bg-zinc-700 transition-all duration-100 ease-linear rounded-lg"/>
+                    class="{$fullScreenStore ? 'w-[calc(100dvw-32px)] h-[calc(100dvw-32px)] flex sm:w-60 sm:h-60' : 'w-12 min-w-[96px] min-h-12 h-12 lg:w-10 lg:min-w-10 lg:min-h-10 lg:h-10'} bg-zinc-300 dark:bg-zinc-700 transition-all duration-100 ease-linear rounded-lg"/>
             <div class="flex flex-col {$fullScreenStore ? 'items-center mt-4' : 'ml-2'}">
-                <span class="dark:text-white font-semibold tracking-wide h-1.5 w-40 rounded-full bg-zinc-300 dark:bg-zinc-700 {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}"/>
+                <span class="dark:text-white font-semibold tracking-wide h-1.5 w-30 rounded-full bg-zinc-300 dark:bg-zinc-700 {$fullScreenStore ? 'text-2xl sm:text-3xl text-center' : 'text-base lg:text-lg'}"/>
                 <div class="flex items-center flex-wrap h-1 rounded-full w-1/2 bg-zinc-300 dark:bg-zinc-700 mt-2 {$fullScreenStore && 'mt-2'}"/>
             </div>
         </div>
@@ -290,7 +290,7 @@
     <div class="flex flex-col-reverse {!$fullScreenStore && 'lg:flex-col'} w-full lg:w-full transition-width ease-linear duration-300">
         <div class="flex w-full items-center justify-between">
             <UserCard bind:accessToken="{accessToken}"/>
-            <div class="flex w-full items-center justify-center lg:mt-0 {$fullScreenStore && '-mt-12 xs:-mt-18'}">
+            <div class="flex w-full items-center justify-center lg:mt-0 {$fullScreenStore && '-mt-12 sm:-mt-18'}">
                 <button on:click={() => shuffle(!$playerState?.shuffle)}
                         class="{$fullScreenStore ? 'mr-4 sm:mr-8' : 'mr-2 sm:mr-4' } p-0.5 group cursor-pointer">
                     <Shuffle
@@ -332,6 +332,6 @@
             </button>
         </div>
         <Progress {playerState} on:seek={seek}
-                  classes="{$fullScreenStore ? 'mb-8 xs:mb-14 lg:mb-8' : 'mb-1 mt-2 lg:mt-1 lg:mb-0'}"/>
+                  classes="{$fullScreenStore ? 'mb-8 sm:mb-14 lg:mb-8' : 'mb-1 mt-2 lg:mt-1 lg:mb-0'}"/>
     </div>
 </div>

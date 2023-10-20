@@ -36,7 +36,7 @@
     const debounceVolumeChange = lodash?.debounce(() => {
         setVolume($newVolume[0]);
     }, 500);
-    const volumeClasses = `${$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'} dark:text-white group-hover:text-zinc-500 dark:group-hover:text-zinc-300`
+    const volumeClasses = "dark:text-white group-hover:text-zinc-500 dark:group-hover:text-zinc-300"
 </script>
 
 <svelte:window bind:innerWidth={screenWidth}/>
@@ -48,13 +48,13 @@
         aria-label="Update dimensions"
 >
     {#if $newVolume[0] === 0}
-        <VolumeX class={volumeClasses}/>
+        <VolumeX class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else if $newVolume[0] < 0.5}
-        <Volume1 class={volumeClasses}/>
+        <Volume1 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else if $newVolume[0] < 1}
-        <Volume2 class={volumeClasses}/>
+        <Volume2 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {:else}
-        <Volume2 class={volumeClasses}/>
+        <Volume2 class="{volumeClasses} {$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'}"/>
     {/if}
     <span class="sr-only">Open Popover</span>
 </button>
