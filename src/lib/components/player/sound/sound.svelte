@@ -1,9 +1,10 @@
 <script lang="ts">
     import {createPopover, createSlider, melt} from '@melt-ui/svelte';
     import {fade} from 'svelte/transition';
-    import {Settings2, Volume1, Volume2, VolumeX, X} from 'lucide-svelte';
+    import {Volume1, Volume2, VolumeX, X} from 'lucide-svelte';
     import {createEventDispatcher} from "svelte";
     import {writable} from "svelte/store";
+    import {fullScreenStore} from "$lib/stores.ts";
     import * as lodash from "lodash";
 
     export let volume: number;
@@ -35,7 +36,7 @@
     const debounceVolumeChange = lodash?.debounce(() => {
         setVolume($newVolume[0]);
     }, 500);
-    const volumeClasses = 'w-2 h-2 sm:w-2.5 sm:h-2.5 dark:text-white group-hover:text-zinc-500 dark:group-hover:text-zinc-300'
+    const volumeClasses = `${$fullScreenStore ? 'w-3 h-3 sm:h-4 sm:w-4' : 'w-2 h-2 sm:w-2.5 sm:h-2.5'} dark:text-white group-hover:text-zinc-500 dark:group-hover:text-zinc-300`
 </script>
 
 <svelte:window bind:innerWidth={screenWidth}/>

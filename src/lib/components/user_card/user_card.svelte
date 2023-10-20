@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {userProfileStore} from "$lib/stores.js";
+    import {fullScreenStore, userProfileStore} from "$lib/stores";
     import {ExternalLink, X} from "lucide-svelte";
     import {onMount} from "svelte";
     import dayjs from "dayjs";
@@ -43,11 +43,11 @@
 </script>
 
 {#if !$userProfileStore?.display_name}
-    <span class="{classes} flex h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[32px] sm:h-4 sm:w-4 sm:min-h-4 rounded-md animate-pulse bg-zinc-300 dark:bg-zinc-700"/>
+    <span class="{classes} {$fullScreenStore ? 'h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[40px] sm:h-5 sm:w-5 sm:min-h-5' : 'h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[32px] sm:h-4 sm:w-4 sm:min-h-4'} flex rounded-md animate-pulse bg-zinc-300 dark:bg-zinc-700"/>
 {:else}
     <button
             type="button"
-            class="{classes} flex h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:h-4 sm:w-4 sm:min-h-4 sm:min-w-[32px] overflow-hidden items-center justify-center rounded-md bg-zinc-100"
+            class="{classes} flex {$fullScreenStore ? 'h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[40px] sm:h-5 sm:w-5 sm:min-h-5' : 'h-3.5 w-3.5 min-h-3.5 min-w-[28px] sm:min-w-[32px] sm:h-4 sm:w-4 sm:min-h-4'} overflow-hidden items-center justify-center rounded-md bg-zinc-100"
             use:melt={$trigger}
             aria-label="Open Spotify profile card"
     >

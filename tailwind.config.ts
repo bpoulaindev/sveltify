@@ -17,7 +17,8 @@ export default {
 			},
 			screens: {
 				xs: '400px',
-				over500: '500px'
+				over500: '500px',
+				nmh: { raw: '(min-height: 640px)' }
 			},
 			transitionProperty: {
 				width: 'width',
